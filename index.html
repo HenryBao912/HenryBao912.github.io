@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Henry Bao</title>
+<meta name="description" content="Game and systems developer. Real-time multiplayer servers, networked co-op gameplay, and production web applications.">
+<meta property="og:title" content="Henry Bao">
+<meta property="og:description" content="Game and systems developer. I build interactive systems that run under load.">
+<meta property="og:image" content="assets/wsr-shipped-poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: left-aligned 12-column page. A large name, then one section per project:
+   title and copy side by side, then the build shown in stages along a track,
+   the way a WikiSpeedrun path is drawn. Blue = link, purple = visited, red = media still to capture. */
+:root {
+  --paper: #eceef2;   /* cool grey ground, so white chips and dark footage sit forward */
+  --panel: #ffffff;
+  --ink: #202122;
+  --muted: #50565e;
+  --rule: #c4c9d1;
+  --link: #3157c4;
+  --visited: #6a4ca6;
+  --redlink: #c42f2f;
+  --redlink-bg: #fcf3f3;
+  --screen: #0f1013;
+
+  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --text: "Newsreader", "Iowan Old Style", Georgia, serif;
+
+  --s-1: 0.8125rem;  /* 13 */
+  --s0: 1rem;        /* 16 */
+  --s1: 1.1875rem;   /* 19, serif body */
+  --s2: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+  --s3: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  --s5: clamp(3.4rem, 1.5rem + 9vw, 10rem);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1280px;
+  /* One look for every reviewer: the page does not follow the OS dark setting. */
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--text); font-size: var(--s1); line-height: 1.6;
+  font-optical-sizing: auto; text-rendering: optimizeLegibility;
+}
+img, video { max-width: 100%; display: block; }
+h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.16em; }
+a:visited { color: var(--visited); }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+
+.wrap { max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+
+/* ——— Hero ——— */
+.hero { padding-block: clamp(3rem, 9vw, 8rem) clamp(3rem, 7vw, 6rem); }
+.hero h1 {
+  font-size: var(--s5); font-weight: 800; letter-spacing: -0.045em; line-height: 0.88;
+  margin-left: -0.04em;
+}
+.hero .grid { margin-top: clamp(2rem, 4.5vw, 3.75rem); row-gap: 1.5rem; }
+.standfirst {
+  grid-column: 1 / span 5;
+  font-family: var(--display); font-size: var(--s2); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em;
+}
+.intro { grid-column: 7 / -1; max-width: 36em; }
+
+/* ——— Projects ——— */
+.project { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 6vw, 5.5rem); }
+.project:last-child { padding-bottom: clamp(4rem, 8vw, 7rem); }
+.project-head { row-gap: 1.5rem; margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+.project-title { grid-column: 1 / span 5; display: grid; gap: 0.75rem; align-content: start; }
+.project-title h2 { font-size: var(--s3); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.meta { font-family: var(--display); font-size: var(--s0); color: var(--muted); line-height: 1.45; }
+.project-copy { grid-column: 7 / -1; display: grid; gap: 1.5rem; align-content: start; max-width: 36em; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0; font-family: var(--display); }
+.stats div { display: grid; gap: 0.1rem; }
+.stats dt { order: 2; font-size: var(--s-1); color: var(--muted); }
+.stats dd { order: 1; margin: 0; font-size: var(--s2); font-weight: 700; letter-spacing: -0.02em; }
+
+.visit { font-family: var(--display); font-size: var(--s0); font-weight: 600; justify-self: start; }
+.visit-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+
+/* ——— Build stages, drawn as a path ——— */
+.stages {
+  list-style: none; margin: 0; padding: 0; position: relative;
+  display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); column-gap: clamp(12px, 1.6vw, 24px); row-gap: 1.25rem;
+}
+/* The track runs through every label; labels sit on top of it. */
+.stages::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0.95rem; height: 1px; background: var(--muted);
+}
+.stage { position: relative; display: grid; gap: 0.75rem; min-width: 0; align-content: start; }
+.stage-label {
+  justify-self: start; font-family: var(--display); font-size: var(--s0); font-weight: 600; line-height: 1.2;
+  padding: 0.35rem 0.75rem; border-radius: 4px; background: var(--panel); color: var(--ink); white-space: nowrap;
+}
+.stage:first-child .stage-label { background: var(--ink); color: var(--paper); }
+.stage:last-child:not(:first-child) .stage-label { background: var(--link); color: #ffffff; }
+
+.shot { background: var(--screen); border-radius: 4px; overflow: hidden; aspect-ratio: 16 / 9; }
+.shot img, .shot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+
+/* Vertical variant: a centred timeline on the page's 12-column grid.
+   Clips span columns 4-9 (the middle half), labels hang right-aligned in columns 1-3,
+   and the track runs down the gutter between them. Column 4 starts at 25% + gutter/4. */
+.stages.stages-vertical { grid-template-columns: minmax(0, 1fr); row-gap: clamp(1.5rem, 3vw, 2.5rem); padding-left: 0; }
+.stages.stages-vertical::before { left: calc(25% - var(--gutter) / 4); right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+.stages-vertical .stage { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 0.75rem; align-items: center; }
+.stages-vertical .stage-label { grid-column: 1 / span 3; justify-self: end; }
+.stages-vertical .shot { grid-column: 4 / span 6; }
+/* Each label sits at the vertical middle of its clip; the track runs from the first label's middle to the last's. */
+.stages-vertical .stage::before { content: ""; position: absolute; left: calc(25% - var(--gutter) * 0.75); top: 50%; width: calc(var(--gutter) / 2); height: 1px; background: var(--muted); }
+.stages-vertical .stage:first-child::after, .stages-vertical .stage:last-child::after { content: ""; position: absolute; left: calc(25% - var(--gutter) / 4 - 1px); width: 3px; background: var(--paper); }
+.stages-vertical .stage:first-child::after { top: -1px; bottom: calc(50% + 1px); }
+.stages-vertical .stage:last-child::after { top: calc(50% + 1px); bottom: -1px; }
+.stages-vertical + .caption { margin-left: calc(25% + var(--gutter) / 4); max-width: calc(50% - var(--gutter) / 2); }
+
+/* Media that hasn't been captured yet: a red link, with the shot it needs. */
+.missing {
+  aspect-ratio: 16 / 9; display: grid; align-content: end; gap: 0.3rem; padding: clamp(0.9rem, 2vw, 1.5rem);
+  background: var(--redlink-bg); border: 1px dashed var(--redlink); border-radius: 4px;
+  font-family: var(--display); font-size: var(--s-1); line-height: 1.4;
+}
+.missing strong { color: var(--redlink); font-weight: 600; font-size: var(--s0); }
+.missing span { color: var(--muted); max-width: 34em; }
+
+/* A lone placeholder spans the full width, so keep it short. */
+.wrap > .missing { aspect-ratio: auto; min-height: clamp(10rem, 20vw, 16rem); }
+
+.caption { font-family: var(--display); font-size: var(--s-1); color: var(--muted); margin-top: 0.9rem; max-width: 40em; }
+.footnote { font-family: var(--display); font-size: 0.75rem; line-height: 1.5; color: var(--muted); margin-top: 0.5rem; max-width: 48em; }
+.caption + .build, .footnote + .build { margin-top: clamp(2.5rem, 5vw, 4rem); }
+
+/* ——— Gameplay panels: one race from three screens ——— */
+.panels {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px); margin: 0;
+}
+.panel { position: relative; margin: 0; background: var(--screen); border-radius: 4px; overflow: hidden; min-height: 0; }
+.panel-main { grid-row: 1 / span 2; aspect-ratio: 16 / 9; }
+.panel img, .panel video { width: 100%; height: 100%; object-fit: cover; }
+.panel:not(.panel-main) { aspect-ratio: 16 / 9; }
+@media (min-width: 901px) {
+  /* Side panels take their height from the race panel, not their images. */
+  .panel:not(.panel-main) { aspect-ratio: auto; }
+  .panel:not(.panel-main) img, .panel:not(.panel-main) video { position: absolute; inset: 0; }
+}
+.panel-label {
+  position: absolute; left: 10px; top: 10px; font-family: var(--display); font-size: var(--s-1); font-weight: 600;
+  padding: 0.25rem 0.55rem; border-radius: 4px; background: rgb(15 16 19 / 0.78); color: #f1f2f4;
+}
+
+.panel-tall { grid-row: 1 / span 2; }
+.panel-tall picture { display: contents; }
+.panel-tall img { object-position: center top; }
+.panel-tall .panel-label { left: auto; right: 10px; }  /* the trip title sits top-left in this crop */
+
+/* ——— Tactics: the same race as a route table ——— */
+.tactics { margin-block: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem; }
+.tactics h3 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
+.routes-scroll { overflow-x: auto; }
+.routes { width: 100%; min-width: 760px; border-collapse: collapse; font-family: var(--display); font-size: var(--s-1); }
+.routes-intro { font-family: var(--display); color: var(--muted); font-size: var(--s0); max-width: 46em; }
+.routes thead th { text-align: left; font-weight: 500; color: var(--muted); padding: 0 0.75rem 0.5rem 0; border-bottom: 1px solid var(--ink); }
+.routes tbody th { text-align: left; font-weight: 600; font-size: var(--s0); white-space: nowrap; padding-right: 1rem; }
+.routes td, .routes tbody th { padding-block: 0.7rem; border-bottom: 1px solid var(--rule); }
+.routes td { padding-right: 0.75rem; }
+.routes .fin { color: var(--muted); white-space: nowrap; }
+.routes tbody tr:first-child .fin { color: var(--ink); font-weight: 600; }
+.dot { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--c); margin-right: 0.5rem; vertical-align: 0.05em; }
+.hop {
+  display: inline-flex; align-items: baseline; gap: 0.45rem; white-space: nowrap;
+  padding: 0.3rem 0.6rem; border-radius: 4px; background: var(--panel); color: var(--ink); font-weight: 500;
+}
+.hop b { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--muted); }
+.hop.near { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--link); }
+.hop.near b { color: var(--link); }
+.hop.goal { background: var(--link); color: var(--paper); font-weight: 600; }
+.routes-key { font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
+.routes-key .hop { margin-right: 0.4rem; }
+
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem var(--gutter); margin-top: 1rem; }
+.notes > div { display: grid; gap: 0.4rem; align-content: start; padding-top: 0.9rem; border-top: 2px solid var(--ink); }
+.notes h4 { font-size: var(--s0); font-weight: 700; }
+.notes p { font-size: 1.0625rem; line-height: 1.55; }
+
+/* ——— How it's built: a spec sheet of engineering decisions ——— */
+.build { margin-bottom: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem; }
+.caption + .build { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }  /* a second set of screens under the first caption */  /* no route table between them (Halfway Home) */
+.build h3 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
+.build-list { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+.build-list > div { display: grid; gap: 0.35rem; align-content: start; padding-block: 1rem 1.25rem; border-top: 1px solid var(--rule); }
+.build-list dt { font-family: var(--display); font-size: var(--s0); font-weight: 700; line-height: 1.35; }
+.build-list dd { margin: 0; font-size: 1.0625rem; line-height: 1.55; }
+.build-list code, .notes code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--panel); padding: 0.05em 0.3em; border-radius: 3px; }
+
+/* ——— Narrow screens ——— */
+@media (max-width: 900px) {
+  .standfirst, .intro, .project-title, .project-copy { grid-column: 1 / -1; }
+  .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto; }
+  .stages-vertical .shot { grid-column: 4 / -1; }
+  .stages-vertical + .caption { max-width: none; }
+  .panel-main { grid-column: 1 / -1; grid-row: auto; }
+  .panel-tall { grid-column: 1 / -1; grid-row: auto; }
+  .panel-tall img { object-position: center; }
+  .notes { grid-template-columns: minmax(0, 1fr); }
+  .build-list { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .stages { grid-template-columns: minmax(0, 1fr); row-gap: 2rem; padding-left: 1.5rem; }
+  .stages::before { left: 0.3rem; right: auto; width: 1px; height: auto; bottom: 0; }
+  .stage::before { content: ""; position: absolute; left: -1.2rem; top: 0.95rem; width: 1rem; height: 1px; background: var(--muted); }
+  .stage:last-child::after { content: ""; position: absolute; left: -1.25rem; top: calc(0.95rem + 1px); bottom: -1px; width: 3px; background: var(--paper); }
+  .stats { gap: 1rem 1.75rem; }
+  .panels { grid-template-columns: minmax(0, 1fr); }
+  .stages-vertical .stage { grid-template-columns: minmax(0, 1fr); }
+  .stages-vertical .stage-label, .stages-vertical .shot { grid-column: 1; margin-left: 1.5rem; }
+  .stages-vertical .stage { align-items: start; }
+  .stages-vertical .stage-label { justify-self: start; }
+  .stages.stages-vertical::before { left: 0.3rem; top: 0.95rem; }
+  .stages-vertical .stage::before { left: 0.3rem; top: 0.95rem; width: 1.2rem; }
+  .stages-vertical .stage:first-child::after { display: none; }
+  .stages-vertical .stage:last-child::after { left: calc(0.3rem - 1px); top: calc(0.95rem + 1px); }
+  .stages-vertical + .caption { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <h1>Henry Bao</h1>
+  <div class="grid">
+    <p class="standfirst">Game and systems developer. I build interactive systems that run under load.</p>
+    <p class="intro">Real-time multiplayer servers, networked co-op gameplay, and production web applications. B.S. Game Design and Interactive Media at UC Irvine, in the Donald Bren School of Information and Computer Sciences. Most of the work below is shipped and playable rather than coursework, and where a project has a history worth seeing I have shown it in stages rather than only the finished state. Every clip is raw capture from the running build.</p>
+  </div>
+</header>
+
+<main>
+  <!-- WikiSpeedrun -->
+  <section class="project" id="wikispeedrun" aria-labelledby="wikispeedrun-title">
+    <div class="wrap">
+      <div class="grid project-head">
+        <div class="project-title">
+          <h2 id="wikispeedrun-title">WikiSpeedrun</h2>
+          <p class="meta">Node.js · Server-Sent Events · Live</p>
+        </div>
+        <div class="project-copy">
+          <p>A browser game where players race each other through Wikipedia using only in-article links. Room-code lobbies with live position and timer sync, and three game modes. I built all of it: the server, the real-time layer, and the analytics stack behind it.</p>
+          <dl class="stats">
+            <div><dt>players</dt><dd>50,000</dd></div>
+            <div><dt>average engagement</dt><dd>13m 47s</dd></div>
+            <div><dt>GitHub stars</dt><dd>160+</dd></div>
+          </dl>
+          <p class="visit-row"><a class="visit" href="https://wikispeedrun.io">wikispeedrun.io</a><a class="visit" href="https://github.com/HenryBao912/WikiSpeedrun">Source on GitHub</a></p>
+        </div>
+      </div>
+
+      <!-- One four-player race, shown from three screens -->
+      <div class="panels">
+        <figure class="panel panel-main">
+          <video src="assets/wsr-race.mp4" poster="assets/wsr-race-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="A four-player race from Sushi to Lunar Roving Vehicle. The view pushes in on the progress bar as each player's pill moves toward the finish line, then pulls back for the winning click and the results screen."></video>
+          <figcaption class="panel-label">Race</figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="assets/wsr-lobby.jpg" alt="The lobby: room code 846E6, four players, and Classic mode selected." width="1120" height="630" loading="lazy">
+          <figcaption class="panel-label">Lobby</figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="assets/wsr-results.jpg" alt="The results screen: each player's path with the hop count after every click, ranked." width="1120" height="630" loading="lazy">
+          <figcaption class="panel-label">Results</figcaption>
+        </figure>
+      </div>
+      <p class="caption">One race from Sushi to Lunar Roving Vehicle. The bar under the breadcrumbs places every player by how many clicks they are from the target, and the green edge is the finish. This race was staged on a local server for the recording: the host is a real browser and the three rivals are clients that join through the same API, every move follows a real link, and the server’s anti-cheat accepted all of them. The push-in on the bar was added after capture.</p>
+
+      <div class="tactics" aria-labelledby="tactics-title">
+        <h3 id="tactics-title">How that race was won</h3>
+        <p class="routes-intro" id="routes-intro">Every player starts on Sushi, three clicks from the target. The number after each article is how many clicks away it left them.</p>
+        <div class="routes-scroll">
+          <table class="routes" aria-describedby="routes-intro">
+            <thead>
+              <tr><th scope="col">Player</th><th scope="col">Click 1</th><th scope="col">Click 2</th><th scope="col">Click 3</th><th scope="col">Click 4</th><th scope="col">Finish</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><span class="dot" style="--c:#7c6fad"></span>Henry</th>
+                <td><span class="hop">United States <b>2</b></span></td>
+                <td><span class="hop near">Space Race <b>1</b></span></td>
+                <td><span class="hop goal">Lunar Roving Vehicle</span></td>
+                <td></td>
+                <td class="fin">Won in 3 clicks, 0:24</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="dot" style="--c:#5a9e8f"></span>Maya</th>
+                <td><span class="hop">Japan</span></td>
+                <td><span class="hop near">Space exploration <b>1</b></span></td>
+                <td><span class="hop">Moon <b>2</b></span></td>
+                <td><span class="hop near">Apollo program <b>1</b></span></td>
+                <td class="fin">1 click short</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="dot" style="--c:#b07850"></span>Edward</th>
+                <td><span class="hop">Fish <b>3</b></span></td>
+                <td><span class="hop">Human <b>2</b></span></td>
+                <td><span class="hop">Moon <b>2</b></span></td>
+                <td></td>
+                <td class="fin">2 clicks short</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="dot" style="--c:#5a8ab5"></span>Jun</th>
+                <td><span class="hop">Rice <b>3</b></span></td>
+                <td><span class="hop">Japan <b>2</b></span></td>
+                <td><span class="hop">Tsunami <b>3</b></span></td>
+                <td></td>
+                <td class="fin">3 clicks short</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="routes-key"><span class="hop near">Outlined</span> one click from the target.</p>
+
+        <div class="notes">
+          <div>
+            <h4>Go wide first</h4>
+            <p>The body of the Sushi article links to about 290 other articles, none of them near a lunar rover. United States links to more than 1,500. The first click buys reach: it took the winning route from three clicks out to two.</p>
+          </div>
+          <div>
+            <h4>Read the distance</h4>
+            <p>Maya was one click away on her second move. Space exploration links straight to Lunar Roving Vehicle, but she clicked Moon and fell back to two. The game shows that cost the moment a page loads, so a wrong turn is visible immediately.</p>
+          </div>
+          <div>
+            <h4>Watch the bar</h4>
+            <p>The bar shows every rival in clicks, not just who is ahead. A pill one click from the line means the next click can end the race. Maya was back at one click when the winning link was clicked.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="build" aria-labelledby="build-title">
+        <h3 id="build-title">How it’s built</h3>
+        <dl class="build-list">
+          <div>
+            <dt>One process, one dependency</dt>
+            <dd>The server is Node’s built-in <code>http</code> module, about 4,500 lines, and its only package is the Postgres driver. The client is a single 10,000-line HTML file. 218 commits so far.</dd>
+          </div>
+          <div>
+            <dt>Real time without WebSockets</dt>
+            <dd>Server-Sent Events push room state to every player, and moves come back as ordinary POST requests. Each session carries a CSRF token and a reconnect token, so a dropped connection rejoins the same seat instead of leaving a ghost player in the room.</dd>
+          </div>
+          <div>
+            <dt>Distance without a round trip</dt>
+            <dd>When a race starts, the server maps the target’s neighbourhood: every article that links to it, then a sample of the articles that link to those. Each click is scored against those sets in memory, with a live lookup for anything the sample misses.</dd>
+          </div>
+          <div>
+            <dt>A careful Wikipedia client</dt>
+            <dd>Link and backlink lookups are cached for 24 hours, capped at 5,000 entries, and identical requests already in flight are merged, so ten rooms asking about the same article make one call.</dd>
+          </div>
+          <div>
+            <dt>Moves are checked on the server</dt>
+            <dd>A click only counts if the article is a real outgoing link of the player’s current page, with redirects resolved first. The check fails open on a Wikipedia error, and it ran in shadow mode, logging without blocking, before I turned enforcement on.</dd>
+          </div>
+          <div>
+            <dt>Puzzles that can be won</dt>
+            <dd>Pairs come from Wikipedia’s pageview data, but views don’t measure reachability: one trending article had 350,000 monthly views and three incoming links. A runtime check now rejects targets that too few pages link to, and production logs feed a blacklist.</dd>
+          </div>
+        </dl>
+      </div>
+
+      <ol class="stages" style="--n: 2" aria-label="WikiSpeedrun in development">
+        <li class="stage">
+          <span class="stage-label">First playable</span>
+          <div class="shot"><img src="assets/wsr-first-playable.jpg" alt="The first playable build: a race from Sushi to Leonardo da Vinci, with the step counter and timer in a bar above the article." width="1600" height="900" loading="lazy"></div>
+        </li>
+        <li class="stage">
+          <span class="stage-label">Shipped</span>
+          <div class="shot"><video src="assets/wsr-shipped.mp4" poster="assets/wsr-shipped-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The shipped game: choosing Earth and Moon, racing through the Earth article, and the results screen."></video></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Halfway Home -->
+  <section class="project" id="halfway-home" aria-labelledby="halfway-home-title">
+    <div class="wrap">
+      <div class="grid project-head">
+        <div class="project-title">
+          <h2 id="halfway-home-title">Halfway Home</h2>
+          <p class="meta">Unity 6.3 · C# · Netcode for GameObjects · Coming to Steam 2026</p>
+        </div>
+        <div class="project-copy">
+          <p>A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time, on a dwindling oxygen budget. Two players carry a single rigid body with physics replicated between them, which is the problem the rest of the game is built around.</p>
+          <p>Around that core: a predator that hunts whoever falls behind, base building, a rover, a fabricator, sandstorms, a map table that shows the planet as a hologram, and landmarks to discover. I am building it alone with an AI-assisted workflow: I write the design document for each system, Claude Code implements it through a bridge into the Unity editor, and I check the result with automated tests and a scripted second player that joins a real build.</p>
+          <dl class="stats">
+            <div><dt>system design documents</dt><dd>21</dd></div>
+            <div><dt>automated tests</dt><dd>517</dd></div>
+            <div><dt>lighting moods</dt><dd>9</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Three places in the current build -->
+      <div class="panels">
+        <figure class="panel panel-main">
+          <video src="assets/hh-arch.mp4" poster="assets/hh-arch-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking toward the Sky Arch with the sun behind it. Turning to face it shows the callout Discovered Sky Arch, then the walk continues under the arch, with sky visible through the rock."></video>
+          <figcaption class="panel-label">Environment</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="assets/hh-deep.mp4" poster="assets/hh-deep-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking out of the sunlit desert into a dark slot canyon whose floor glows with teal and lilac pools."></video>
+          <figcaption class="panel-label">Landmarks</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="assets/hh-boneyard.mp4?v=4" poster="assets/hh-boneyard-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking in under a giant petrified rib cage, then turning as the predator walks out of the alien trees."></video>
+          <figcaption class="panel-label">Enemy AI</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Three places in the current build. The Sky Arch is sited by its approach: the level tool searches the map for open ground with a clear 150 m path heading straight into the sun, so the arch first appears as a silhouette. The Deep Cut is a canyon whose walls put its floor in real shadow, lit from below by pulsing pools. At the Boneyard the predator comes out of the trees; its attacks are held off for this recording. All three are raw capture from the editor, with the long walks sped up.</p>
+
+      <!-- Building, the map, and the way out -->
+      <div class="panels panels-next">
+        <figure class="panel panel-main">
+          <video src="assets/hh-build.mp4" poster="assets/hh-build-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Base building: a teal ghost shows where each piece will land, and floors, walls, windows and a roof snap onto a grid until a small hut stands in the desert."></video>
+          <figcaption class="panel-label">Base building</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="assets/hh-leaving.mp4" poster="assets/hh-leaving-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The ending: a flyover of the camp, then the camera settles behind the crew's hut with the rover parked beside it as the repaired ship lifts off on three jets and climbs away, before an overhead view of the land falling away below."></video>
+          <figcaption class="panel-label">Ending</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="assets/hh-map.mp4" poster="assets/hh-map-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The map: walking up to a table at the wreck, the hologram planet rises to eye level, turns and zooms, with pins for discovered landmarks and ship parts, then settles back onto the table."></video>
+          <figcaption class="panel-label">Map</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Building, finding your way, and leaving. Press B and pieces snap to a 5 m grid; the server checks each placement and takes the cost from what you are carrying. There is no minimap: the map is a hologram over a table at the wreck that rises to eye level when you read it, with pins for whatever the crew has found. Once the ship is whole both players vote to leave, every machine plays the same ending in step, and if you built a base the ending frames it.*</p>
+      <p class="footnote">*For these recordings the hut was built by a script through the real build-mode input, the map was shown with everything already discovered, and the ship was set to ready so the ending could play without collecting the parts first.</p>
+
+      <div class="build" aria-labelledby="hh-build-title">
+        <h3 id="hh-build-title">How it’s built</h3>
+        <dl class="build-list">
+          <div>
+            <dt>The host owns the physics</dt>
+            <dd>My first networked test let each player own their own body, and the second player’s grip snapped as soon as they moved. So every rigid body now runs on the host. Each grip is a <code>ConfigurableJoint</code>, so two players on one 107 kg battery are two springs pulling on the same body, and both screens show the host’s result.</dd>
+          </div>
+          <div>
+            <dt>Tested against a real second player</dt>
+            <dd>A standalone build joins the editor as player two and plays from a script: hauling, installing a part together, driving, voting to leave. It also records screenshots and frame times from inside the build at the Steam Deck’s resolution. 517 automated tests sit underneath.</dd>
+          </div>
+          <div>
+            <dt>Geometry built to the design document</dt>
+            <dd>The art bible asks for an arch about 15 m across with 8 m of headroom, and for a deep zone whose floor never sees the sun. Both are procedural meshes generated to those numbers, and unit tests measure the result: the arch’s clearance, and how much floor a canyon wall shades at the game’s sun angle.</dd>
+          </div>
+          <div>
+            <dt>A test setup that shipped</dt>
+            <dd>To run two players on one machine, the host was locked to the keyboard and the second player to a gamepad and the arrow keys. That split was reaching builds, where a Steam Deck host couldn’t move. Builds now give every player every local device; the split only exists in the editor.</dd>
+          </div>
+          <div>
+            <dt>Saves that know which crystal you took</dt>
+            <dd>Gatherable nodes were saved under one name per type, so while any crystal survived a save, every crystal came back on load. Each node now saves under its own scene identity, and saves record a content version so newer content isn’t mistaken for something already gathered.</dd>
+          </div>
+          <div>
+            <dt>When a partner drops</dt>
+            <dd>A disconnected player’s body is held for 90 seconds in case they rejoin. The predator and wildlife freeze while the host waits, and if the partner doesn’t come back the host chooses to continue solo or save and quit. Before this, the body stayed forever, still holding whatever it carried.</dd>
+          </div>
+        </dl>
+      </div>
+
+      <ol class="stages stages-vertical" aria-label="Halfway Home in development">
+        <li class="stage">
+          <span class="stage-label">Prototype</span>
+          <div class="shot"><video src="assets/hh-prototype.mp4" poster="assets/hh-prototype-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The prototype: two capsules walk to a crate, grip it with ropes and haul it across a grey whitebox floor toward a target zone, with the prototype's debug panel in the corner."></video></div>
+        </li>
+        <li class="stage">
+          <span class="stage-label">Systems pass</span>
+          <div class="shot"><video src="assets/hh-systems.mp4" poster="assets/hh-systems-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Systems pass: one player hauls a battery away from the crashed ship."></video></div>
+        </li>
+        <li class="stage">
+          <span class="stage-label">Current build</span>
+          <div class="shot"><video src="assets/hh-current.mp4" poster="assets/hh-current-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Current build: two players carry one crate together across the desert toward the ship."></video></div>
+        </li>
+      </ol>
+      <p class="caption">Three points in development. The prototype took two days and answered one question, whether hauling a heavy crate together is fun, with two capsules on one keyboard and no netcode; it also settled the game’s gravity at 0.75 g. Then the networked systems pass, then art.</p>
+    </div>
+  </section>
+
+  <!-- Tripreview -->
+  <section class="project" id="tripreview" aria-labelledby="tripreview-title">
+    <div class="wrap">
+      <div class="grid project-head">
+        <div class="project-title">
+          <h2 id="tripreview-title">Tripreview</h2>
+          <p class="meta">Next.js · TypeScript · Postgres · Live</p>
+        </div>
+        <div class="project-copy">
+          <p>A travel web application built on a curated place database rather than scraped listings. I built the schema, the data pipeline, the type system and the front end, and designed the editorial system it is laid out in.</p>
+          <p>You pick a corner of Southern California on a map, say how long you have and what kind of day you want, and it plans the day from coffee to dinner in an order that keeps travel short, laid out like a magazine page you can share.</p>
+          <dl class="stats">
+            <div><dt>curated places</dt><dd>1,108</dd></div>
+            <div><dt>region guides</dt><dd>30</dd></div>
+          </dl>
+          <a class="visit" href="https://tripreview.app">tripreview.app</a>
+        </div>
+      </div>
+
+      <!-- A trip and its stop list -->
+      <div class="panels">
+        <figure class="panel panel-main">
+          <img src="assets/tp-storyboard.jpg" alt="A generated trip, A Slow Laguna Saturday: an 11-hour, six-stop day on about two miles of walking, set beside a photo of a cliffside house above the surf." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Trip</figcaption>
+        </figure>
+        <figure class="panel panel-tall">
+          <picture>
+            <source media="(max-width: 900px)" srcset="assets/tp-plan-list.jpg">
+            <img src="assets/tp-stoplist.jpg" alt="The stop list for A Slow Laguna Saturday: six stops from Moulin at 8:30am to Studio at 7:30pm, each with its time, category, rating and review count." width="900" height="1053" loading="lazy">
+          </picture>
+          <figcaption class="panel-label">Stop list</figcaption>
+        </figure>
+      </div>
+      <p class="caption">A generated trip and its stop list: each stop’s time, category, rating and tier, from coffee at 8:30am to dinner at 7:30pm. Stops can be dragged into a new order, or tapped to swap them or change their type.</p>
+
+      <!-- Inside a trip -->
+      <div class="panels panels-next">
+        <figure class="panel panel-main">
+          <img src="assets/tp-stop.jpg" alt="The first stop, Moulin in Laguna Beach at 8:30am: a photo of the cafe counter, a caption, what to order, and the drive to the next stop." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Stop</figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="assets/tp-mobile.jpg" alt="The same trip on a phone: the opening spread and the first stop." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Mobile</figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="assets/tripreview.jpg" alt="Tripreview's one-day guide to Laguna Beach: a headline, a short introduction, and a row of photographed coffee shops." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Region guide</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Each stop says what to order and how far away the next one is. The site is designed for phones first, and every region has its own guide page written for search.</p>
+
+      <div class="build" aria-labelledby="tp-build-title">
+        <h3 id="tp-build-title">How it’s built</h3>
+        <dl class="build-list">
+          <div>
+            <dt>Ratings you can compare</dt>
+            <dd>Ratings go through a Bayesian average that treats every place as if it started with 100 reviews at 3.8 stars, so a 5.0 from six reviews can’t outrank a 4.7 from thousands. The same numbers sort places into tiers: a strong rating with under 100 reviews is a hidden gem, over 1,500 is a heavy hitter.</dd>
+          </div>
+          <div>
+            <dt>A day that holds together</dt>
+            <dd>Each trip length has a fixed shape: a full day is coffee, a walk, lunch, an activity, drinks and dinner. Each slot is a weighted draw on vibe match times rating to the power 2.5, halved for a place 3 km from the previous stop. Better places win more often, and regenerating still gives a different day.</dd>
+          </div>
+          <div>
+            <dt>Drafted by a model, approved by me</dt>
+            <dd>A discovery script finds well-rated places to fill gaps in each region, skipping anything already in the database by ID, by name, or by sitting within 70 m of one. Claude drafts each entry through a fixed schema, and every draft goes into a review file where I accept, edit or reject it before it is seeded.</dd>
+          </div>
+          <div>
+            <dt>Photos picked by eye</dt>
+            <dd>For every place the pipeline builds a contact sheet of up to six Google photos. I picked a calibration set of 14 by hand, the rest were picked to match and checked on a single review page, and the chosen three per place are resized and stored on Vercel Blob.</dd>
+          </div>
+          <div>
+            <dt>A gate on the writing</dt>
+            <dd>A script fails the launch if any copy a visitor can read contains an em dash or a word that reads as machine-written, like “delve”, “nestled” or “world-class”. It checks the source copy, the curated data files and the live database.</dd>
+          </div>
+          <div>
+            <dt>An audit, then fixes</dt>
+            <dd>A full product audit on 4 June scored the trip page 5 out of 10: the flagship trip had 18 stops and showed two coffees at 8:30am. The same day I trimmed it to a real six-stop day, made times follow each stop’s position, limited trips to the drawn area and built the two-column desktop layout.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- VJ System -->
+  <section class="project" id="vj-system" aria-labelledby="vj-system-title">
+    <div class="wrap">
+      <div class="grid project-head">
+        <div class="project-title">
+          <h2 id="vj-system-title">VJ System</h2>
+          <p class="meta">Unity · C# · Sun Seven Stars Media Group, Beijing, 2025</p>
+        </div>
+        <div class="project-copy">
+          <p>A real-time audio visualizer and VJ tool built in Unity for a brand IP launch, driving generative visuals from live audio input. I also built the node-based pipelines that produced the campaign footage and animated GIF pack, and directed and cut the campaign video.</p>
+        </div>
+      </div>
+      <div class="missing" role="img" aria-label="Visualizer capture not added yet">
+        <strong>Capture needed</strong>
+        <span>The visualizer reacting to live audio, 10 to 15 seconds. A still from the campaign video would sit well beside it.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<script>
+  // Clips play only while on screen, and not at all for people who ask for reduced motion.
+  const clips = document.querySelectorAll('video');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  clips.forEach((v) => {
+    if (still) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+  });
+  if (!still && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) target.play().catch(() => {}); else target.pause();
+      });
+    }, { threshold: 0.25 });
+    clips.forEach((v) => io.observe(v));
+  }
+</script>
+</body>
+</html>

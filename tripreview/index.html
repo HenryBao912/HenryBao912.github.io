@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hb-intro'))document.documentElement.classList.add('seen')}catch(e){}</script>
 <title>Tripreview · Henry Bao</title>
 <meta name="description" content="A travel web application built on a curated place database rather than scraped listings.">
 <link rel="canonical" href="https://henrybao912.github.io/tripreview/">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body class="page-project">
+<div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
 
 <a class="skip" href="#main">Skip to content</a>
 <header class="topbar">
@@ -43,7 +45,7 @@
       <div class="grid project-head">
         <div class="project-title">
           <h1 id="tripreview-title">Tripreview</h1>
-          <p class="meta">Next.js · TypeScript · Postgres · Live</p>
+          <p class="meta">Next.js · TypeScript · Postgres · Live</p>
         </div>
         <div class="project-copy">
           <p>A travel web application built on a curated place database rather than scraped listings. I built the schema, the data pipeline, the type system and the front end, and designed the editorial system it is laid out in.</p>
@@ -59,15 +61,15 @@
       <!-- A trip and its stop list -->
       <div class="panels">
         <figure class="panel panel-main">
-          <img data-full src="../assets/tp-storyboard.jpg" alt="A generated trip, A Slow Laguna Saturday: an 11-hour, six-stop day on about two miles of walking, set beside a photo of a cliffside house above the surf." width="1600" height="900" loading="lazy">
-          <figcaption class="panel-label">Trip</figcaption>
+          <img data-full src="../assets/tp-storyboard.jpg" alt="A generated trip, A Slow Laguna Saturday: an 11-hour, six-stop day on about two miles of walking, set beside a photo of a cliffside house above the surf." width="1600" height="900">
+          <figcaption class="panel-label is-right">Trip</figcaption>
         </figure>
         <figure class="panel panel-tall">
           <picture>
             <source media="(max-width: 900px)" srcset="../assets/tp-plan-list.jpg">
-            <img data-full src="../assets/tp-stoplist.jpg" alt="The stop list for A Slow Laguna Saturday: six stops from Moulin at 8:30am to Studio at 7:30pm, each with its time, category, rating and review count." width="900" height="1053" loading="lazy">
+            <img data-full src="../assets/tp-stoplist.jpg" alt="The stop list for A Slow Laguna Saturday: six stops from Moulin at 8:30am to Studio at 7:30pm, each with its time, category, rating and review count." width="900" height="1053">
           </picture>
-          <figcaption class="panel-label">Stop list</figcaption>
+          <figcaption class="panel-label is-right">Stop list</figcaption>
         </figure>
       </div>
       <p class="caption">A generated trip and its stop list: each stop’s time, category, rating and tier, from coffee at 8:30am to dinner at 7:30pm. Stops can be dragged into a new order, or tapped to swap them or change their type.</p>

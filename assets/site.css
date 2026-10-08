@@ -85,6 +85,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .intro { grid-column: 7 / -1; max-width: 36em; }
 .page-home .hero { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
 
+/* ——— Page not found ——— */
+.notfound { display: grid; gap: 1rem; }
+.notfound ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; font-family: var(--display); font-size: var(--s0); font-weight: 600; }
+
 /* ——— Home: every project as a tile ——— */
 .work { border-top: 1px solid var(--rule); padding-block: clamp(2.25rem, 4vw, 3.25rem) clamp(4rem, 8vw, 7rem); }
 .work-head {
@@ -219,7 +223,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .panel-tall { grid-row: 1 / span 2; }
 .panel-tall picture { display: contents; }
 .panel-tall img { object-position: center top; }
-.panel-tall .panel-label { left: auto; right: 10px; }  /* the trip title sits top-left in this crop */
+.panel-label.is-right { left: auto; right: 10px; }  /* where the screenshot's own title sits top-left */
 
 .caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }
 .panels + .panels { margin-top: clamp(8px, 1vw, 14px); }  /* two rows of one gallery, spaced like the panels within a row */
@@ -232,7 +236,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 /* ——— Tactics: a race as a route table ——— */
 .tactics { margin-block: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem; }
 .tactics > h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
-.routes-scroll { overflow-x: auto; }
+.routes-scroll {
+  overflow-x: auto;
+  /* When the table is wider than the screen, the edge that hides more columns fades (set by the script). */
+  --fade-l: #000; --fade-r: #000;
+  -webkit-mask-image: linear-gradient(to right, var(--fade-l), #000 2.5rem, #000 calc(100% - 2.5rem), var(--fade-r));
+  mask-image: linear-gradient(to right, var(--fade-l), #000 2.5rem, #000 calc(100% - 2.5rem), var(--fade-r));
+}
+.routes-scroll[data-edge="start"] { --fade-r: transparent; }
+.routes-scroll[data-edge="middle"] { --fade-l: transparent; --fade-r: transparent; }
+.routes-scroll[data-edge="end"] { --fade-l: transparent; }
 .routes { width: 100%; min-width: 760px; border-collapse: collapse; font-family: var(--display); font-size: var(--s-1); }
 .routes-intro { font-family: var(--display); color: var(--muted); font-size: var(--s0); max-width: 46em; }
 .routes thead th { text-align: left; font-weight: 500; color: var(--muted); padding: 0 0.75rem 0.5rem 0; border-bottom: 1px solid var(--ink); }
@@ -387,10 +400,10 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
 
 .lightbox {
   padding: 0; border: 0; margin: 0; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none;
-  background: rgb(12 13 15 / 0.97); color: #f1f2f4; overflow: hidden;
+  background: #0c0d0f; color: #f1f2f4; overflow: hidden;
 }
 .lightbox[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
-.lightbox::backdrop { background: rgb(12 13 15 / 0.97); }
+.lightbox::backdrop { background: #0c0d0f; }
 .lightbox-stage { display: grid; place-items: center; min-height: 0; overflow: auto; padding: clamp(12px, 3vw, 40px); }
 .lightbox-stage img, .lightbox-stage video { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 2px; }
 .lightbox-stage img.can-zoom { cursor: zoom-in; }
@@ -412,6 +425,53 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
 .lightbox-controls button:focus-visible { outline: 2px solid #8cacff; outline-offset: 2px; }
 .lightbox-count { min-width: 4.5em; text-align: center; color: rgb(241 242 244 / 0.6); font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .zoom-hint { transition: none; } }
+
+/* ——— Loading: my name stands in for anything still on its way ——— */
+/* Page loader: on the first page of a visit, my name fills in while the first screen loads, then
+   the page is revealed. It is there from the first paint, so it never covers content that was
+   already showing; later pages in the same visit skip it (html.seen). It needs the script (html.js)
+   and gives up on its own after five seconds even if the script never runs. */
+.loader { display: none; }
+.js .loader {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: var(--paper); pointer-events: none;
+  animation: loader-out 0.4s ease 5s forwards;
+}
+.js.seen .loader, .js .loader.is-gone { display: none; }
+@keyframes loader-out { to { opacity: 0; visibility: hidden; } }
+.loader-name {
+  position: relative; font-family: var(--display); font-weight: 800; letter-spacing: -0.045em; line-height: 1;
+  font-size: clamp(2.75rem, 1.5rem + 6vw, 6.5rem); color: var(--rule); white-space: nowrap;
+}
+/* The name fills in from the left, then the fill moves on to the right: one continuous sweep. */
+.loader-name::after {
+  content: attr(data-name); position: absolute; inset: 0; color: var(--ink);
+  clip-path: inset(0 100% 0 0); animation: loader-sweep 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes loader-sweep {
+  0% { clip-path: inset(0 100% 0 0); }
+  50% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+
+/* Media placeholder: a faint, pulsing name behind every image and clip until it arrives. */
+.panel, .shot, .tile-media, .carousel-slide { container-type: inline-size; isolation: isolate; }
+.panel::before, .shot::before, .tile-media::before, .carousel-slide::before, .lightbox-stage.is-loading::before {
+  content: "Henry Bao"; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  display: grid; place-items: center; white-space: nowrap;
+  font-family: var(--display); font-weight: 800; letter-spacing: -0.045em; line-height: 1;
+  font-size: 1.5rem; font-size: 7cqw; color: rgb(241 242 244 / 0.16);
+  animation: name-pulse 1.8s ease-in-out infinite;
+}
+.lightbox-stage { position: relative; isolation: isolate; }
+.lightbox-stage.is-loading::before { font-size: clamp(2.5rem, 1.5rem + 5vw, 6rem); }
+.is-loaded::before { content: none; }
+.is-failed::before { animation: none; }
+@keyframes name-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .js .loader { display: none; }
+  .panel::before, .shot::before, .tile-media::before, .carousel-slide::before, .lightbox-stage.is-loading::before { animation: none; }
+}
 
 /* ——— Narrow screens ——— */
 @media (max-width: 900px) {
@@ -452,6 +512,10 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .stage:last-child::after { content: ""; position: absolute; left: -1.25rem; top: calc(0.95rem + 1px); bottom: -1px; width: 3px; background: var(--paper); }
   .stats { gap: 1rem 1.75rem; }
   .panels { grid-template-columns: minmax(0, 1fr); }
+  /* Screenshots shrink on a phone, so their labels do too, to cover less of them. */
+  .panel-label { left: 8px; top: 8px; font-size: 0.6875rem; padding: 0.2rem 0.45rem; }
+  .panel-label.is-right { left: auto; right: 8px; }
+  .zoom-hint { right: 8px; bottom: 8px; }
   .stages-vertical .stage { grid-template-columns: minmax(0, 1fr); }
   .stages-vertical .stage-label, .stages-vertical .shot { grid-column: 1; margin-left: 1.5rem; }
   .stages-vertical .stage { align-items: start; }

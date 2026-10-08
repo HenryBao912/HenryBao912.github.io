@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hb-intro'))document.documentElement.classList.add('seen')}catch(e){}</script>
 <title>Hutong After Rain · Henry Bao</title>
 <meta name="description" content="An environment study in Unreal Engine 5 of a Beijing lane at night, twenty minutes after the rain stopped.">
 <link rel="canonical" href="https://henrybao912.github.io/hutong-after-rain/">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body class="page-project">
+<div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
 
 <a class="skip" href="#main">Skip to content</a>
 <header class="topbar">
@@ -44,10 +46,10 @@
         <div class="project-title">
           <h1 id="hutong-after-rain-title">Hutong After Rain</h1>
           <p class="title-zh" lang="zh-Hans">雨后胡同</p>
-          <p class="meta">Unreal Engine 5.8 · Lumen · Path Tracer · 2026</p>
+          <p class="meta">Unreal Engine 5.8 · Lumen · Path Tracer · 2026</p>
         </div>
         <div class="project-copy">
-          <p>An environment study of a short stretch of a Beijing residential hutong at night, about twenty minutes after the rain has stopped. Warm practicals, a paper lantern, a doorway bulb and a sodium street lamp, set against a cool city sky and soaked stone.</p>
+          <p>An environment study of a short stretch of a Beijing residential hutong at night, about twenty minutes after the rain has stopped. Its warm light comes from a paper lantern, a doorway bulb and a sodium street lamp, set against a cool city sky and soaked stone.</p>
           <p>I locked five cameras at the greybox stage, so every milestone is a true before and after. The lane is two runs of alley with one bend, 4 to 6 m wide between walls 2.8 to 3.5 m high, dressed with bikes, bins, cables, laundry, meter boxes and invented Chinese couplets and notices. I built the paper lantern, the shop’s drinks fridge, the carved stone piers and the lane surface itself, with its crown, gutters and potholes, in Unreal with Geometry Script.</p>
           <dl class="stats">
             <div><dt>locked cameras</dt><dd>5</dd></div>
@@ -68,11 +70,11 @@
           <figcaption class="panel-label" data-pt="Ruyi gate, path traced" data-rt="Ruyi gate, real time">Ruyi gate, path traced</figcaption>
         </figure>
         <figure class="panel">
-          <img data-full src="../assets/hutong-05-pt.jpg" data-pt="../assets/hutong-05-pt.jpg" data-rt="../assets/hutong-05-rt.jpg" alt="An 85 mm detail of the shop's red paper lantern against lamp-lit brick, with the alley falling out of focus behind." width="1920" height="1080" loading="lazy">
+          <img data-full src="../assets/hutong-05-pt.jpg" data-pt="../assets/hutong-05-pt.jpg" data-rt="../assets/hutong-05-rt.jpg" alt="An 85 mm detail of the shop's red paper lantern against lamp-lit brick, with the alley falling out of focus behind." width="1920" height="1080">
           <figcaption class="panel-label" data-pt="Shop lantern, path traced" data-rt="Shop lantern, real time">Shop lantern, path traced</figcaption>
         </figure>
         <figure class="panel">
-          <img data-full src="../assets/hutong-03-pt.jpg" data-pt="../assets/hutong-03-pt.jpg" data-rt="../assets/hutong-03-rt.jpg" alt="A corner shop's cool white light and drinks fridge spilling onto the wet lane." width="1920" height="1080" loading="lazy">
+          <img data-full src="../assets/hutong-03-pt.jpg" data-pt="../assets/hutong-03-pt.jpg" data-rt="../assets/hutong-03-rt.jpg" alt="A corner shop's cool white light and drinks fridge spilling onto the wet lane." width="1920" height="1080">
           <figcaption class="panel-label" data-pt="Shopfront spill, path traced" data-rt="Shopfront spill, real time">Shopfront spill, path traced</figcaption>
         </figure>
       </div>
@@ -91,7 +93,7 @@
       <!-- The flythrough -->
       <div class="panels panels-next panels-solo">
         <figure class="panel panel-main">
-          <video src="../assets/hutong-flythrough.mp4" poster="../assets/hutong-flythrough-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The flythrough: the camera moves down the wet lane past bikes, bins and lit doorways, round the corner shop with its drinks fridge, to a warm doorway at the bend."></video>
+          <video src="../assets/hutong-flythrough.mp4" poster="../assets/hutong-flythrough-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The flythrough: the camera moves down the wet lane past bikes, bins and lit doorways, round the corner shop with its drinks fridge, to a warm doorway at the bend."></video>
           <figcaption class="panel-label">Flythrough, real time</figcaption>
         </figure>
       </div>
@@ -106,7 +108,7 @@
           </div>
           <div>
             <dt>One master surface</dt>
-            <dd>Brick, stone, wood and roof tiles run through one box-projected master material with a shared wetness function and per-instance history: colour drift, grime bands, streaks, cracks and chipped edges over Poly Haven scans.</dd>
+            <dd>Brick, stone, wood and roof tiles run through one box-projected master material with a shared wetness function and per-instance history: color drift, grime bands, streaks, cracks and chipped edges over Poly Haven scans.</dd>
           </div>
           <div>
             <dt>Puddles that sit in the ground</dt>
@@ -122,7 +124,7 @@
           </div>
           <div>
             <dt>Checked against photographs</dt>
-            <dd>Three realism passes compared the frames with photographs of Beijing hutongs after rain and fixed whatever read as rendered. Every milestone was rendered in Lumen and in the Path Tracer side by side, and the real-time scene runs at about 72 fps on an RTX 4080.</dd>
+            <dd>Three realism passes compared the frames with photographs of Beijing hutongs after rain and fixed whatever read as rendered. Every milestone was also rendered in both Lumen and the Path Tracer, so the two could be compared side by side.</dd>
           </div>
         </dl>
       </div>
@@ -140,7 +142,7 @@
           </div>
           <div class="carousel-frame" aria-live="off">
           <figure class="carousel-slide" id="dev-1" data-label="Greybox">
-            <img src="../assets/hutong-stage-1.jpg" alt="Greybox: grey walls and a flat grey lane from the alley entrance camera." width="768" height="432" loading="lazy">
+            <img src="../assets/hutong-stage-1.jpg" alt="Greybox: gray walls and a flat gray lane from the alley entrance camera." width="768" height="432" loading="lazy">
           </figure>
           <figure class="carousel-slide" id="dev-2" data-label="First materials">
             <img src="../assets/hutong-stage-2.jpg" alt="First materials: brick walls and paving on the same layout, still lit by flat daylight." width="768" height="432" loading="lazy">
@@ -149,7 +151,7 @@
             <img src="../assets/hutong-stage-3.jpg" alt="The first realism pass: the lane at night with a blue sky, lit doorways and wet paving." width="768" height="432" loading="lazy">
           </figure>
           <figure class="carousel-slide" id="dev-4" data-label="Final">
-            <img src="../assets/hutong-stage-4.jpg" alt="The final, path traced: the sodium lamp, the tower block beyond the roofs, and reflections in the soaked lane." width="768" height="432" loading="lazy">
+            <img data-full src="../assets/hutong-01-pt.jpg" alt="The final, path traced: the sodium lamp, the tower block beyond the roofs, and reflections in the soaked lane." width="1920" height="1080" loading="lazy">
           </figure>
             <button type="button" class="carousel-step prev" aria-label="Previous stage"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <button type="button" class="carousel-step next" aria-label="Next stage"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -176,10 +178,10 @@
             <img src="../assets/hutong-pass-wireframe.jpg" alt="The puddle reflection shot as a wireframe: every edge of the walls, bikes, cables and lane drawn in cyan." width="1600" height="900" loading="lazy">
           </figure>
           <figure class="carousel-slide" id="pass-2" data-label="Unlit">
-            <img src="../assets/hutong-pass-unlit.jpg" alt="The puddle reflection shot unlit: base colours only, with no light or shadow." width="1600" height="900" loading="lazy">
+            <img src="../assets/hutong-pass-unlit.jpg" alt="The puddle reflection shot unlit: base colors only, with no light or shadow." width="1600" height="900" loading="lazy">
           </figure>
           <figure class="carousel-slide" id="pass-3" data-label="Lighting only">
-            <img src="../assets/hutong-pass-lighting.jpg" alt="The puddle reflection shot with lighting only: grey surfaces under the night sky, the lamps and the shop light." width="1600" height="900" loading="lazy">
+            <img src="../assets/hutong-pass-lighting.jpg" alt="The puddle reflection shot with lighting only: gray surfaces under the night sky, the lamps and the shop light." width="1600" height="900" loading="lazy">
           </figure>
           <figure class="carousel-slide" id="pass-4" data-label="Real time">
             <img data-full src="../assets/hutong-04-rt.jpg" alt="The puddle reflection shot rendered in real time with Lumen." width="1920" height="1080" loading="lazy">
@@ -190,7 +192,7 @@
             <button type="button" class="carousel-step prev" aria-label="Previous pass"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <button type="button" class="carousel-step next" aria-label="Next pass"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
-          <p class="caption">The puddle reflection taken apart: wireframe, unlit base colour, lighting only, real time with Lumen, and path traced.</p>
+          <p class="caption">The puddle reflection taken apart: wireframe, unlit base color, lighting only, real time with Lumen, and path traced.</p>
         </div>
       </div>
 

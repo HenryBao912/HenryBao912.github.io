@@ -9,18 +9,77 @@
     row.dataset.edge = atStart && atEnd ? 'none' : atStart ? 'start' : atEnd ? 'end' : 'middle';
   };
 
-  // Project pages: clips play only while on screen, and not at all for people who ask for reduced motion.
-  const clips = document.querySelectorAll('video[autoplay]');
-  clips.forEach((v) => {
-    if (still) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+  // Loading: until an image or clip arrives, its frame shows my name (.is-loaded in site.css
+  // removes it). Each frame gets a promise so the page loader can wait for the first screen.
+  const frames = [...document.querySelectorAll('.panel, .shot, .tile-media, .carousel-slide')];
+  const frameReady = new Map(frames.map((frame) => [frame, new Promise((resolve) => {
+    const settle = (ok) => { frame.classList.add(ok ? 'is-loaded' : 'is-failed'); resolve(); };
+    const img = frame.querySelector('img');
+    const video = frame.querySelector('video');
+    if (img) {
+      if (img.complete) { settle(img.naturalWidth > 0); return; }
+      img.addEventListener('load', () => settle(true), { once: true });
+      img.addEventListener('error', () => settle(false), { once: true });
+    } else if (video) {
+      if (video.readyState >= 2) { settle(true); return; }
+      video.addEventListener('loadeddata', () => settle(true), { once: true });
+      if (video.poster) {
+        const probe = new Image();
+        probe.onload = () => settle(true);
+        probe.onerror = () => settle(false);
+        probe.src = video.poster;
+      }
+    } else {
+      resolve();
+    }
+  })]));
+
+  // Page loader (first page of a visit only, see .loader in site.css): once the fonts and the media
+  // on the first screen are ready, and the name has had a moment to fill in, fade it out. Never hold
+  // the page more than three seconds after navigation began.
+  const loader = document.querySelector('.loader');
+  const root = document.documentElement;
+  if (loader && !root.classList.contains('seen') && !still) {
+    const firstScreen = frames.filter((f) => {
+      const r = f.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < innerHeight;
+    });
+    const waits = firstScreen.map((f) => frameReady.get(f));
+    if (document.fonts) waits.push(document.fonts.ready);
+    waits.push(new Promise((r) => setTimeout(r, Math.max(0, 1000 - performance.now()))));
+    const cap = new Promise((r) => setTimeout(r, Math.max(0, 3000 - performance.now())));
+    Promise.race([Promise.all(waits), cap]).then(() => {
+      try { sessionStorage.setItem('hb-intro', '1'); } catch (e) { /* private mode: show it again next time */ }
+      loader.style.animation = 'none';
+      loader.style.transition = 'opacity 0.45s ease';
+      loader.style.opacity = '0';
+      setTimeout(() => loader.classList.add('is-gone'), 500);
+    });
+  }
+
+  // WikiSpeedrun's route table scrolls sideways on narrow screens: fade the edge that hides columns.
+  document.querySelectorAll('.routes-scroll').forEach((row) => {
+    const update = () => markEdges(row);
+    row.addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+    if (document.fonts) document.fonts.ready.then(update);
   });
-  if (!still && 'IntersectionObserver' in window) {
+
+  // Project pages: clips load and play only while near the screen, so a page with a dozen clips
+  // doesn't download all of them up front. Reduced motion gets controls instead of playback.
+  const clips = document.querySelectorAll('video[data-autoplay]');
+  if (still) {
+    clips.forEach((v) => { v.controls = true; v.preload = 'metadata'; });
+  } else if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(({ target, isIntersecting }) => {
         if (isIntersecting) target.play().catch(() => {}); else target.pause();
       });
-    }, { threshold: 0.25 });
+    }, { rootMargin: '200px 0px', threshold: 0 });
     clips.forEach((v) => io.observe(v));
+  } else {
+    clips.forEach((v) => v.play().catch(() => {}));
   }
 
   // Home tiles: the still is the resting state. A short preview plays over it while you point at
@@ -126,12 +185,18 @@
         }
       };
 
+      let loadToken = 0;
       const show = (i) => {
         index = (i + items.length) % items.length;
         const el = items[index];
         const media = el.querySelector('video') || el.querySelector('img');
         box.classList.remove('is-zoomed');
         stage.replaceChildren();
+        // My name holds the stage until the enlarged image or clip arrives. The token stops a slow
+        // earlier image from clearing the placeholder of the one now showing.
+        const token = ++loadToken;
+        const loaded = () => { if (token === loadToken) stage.classList.remove('is-loading'); };
+        stage.classList.add('is-loading');
         if (media.tagName === 'VIDEO') {
           const v = document.createElement('video');
           v.src = media.currentSrc || media.src;
@@ -139,14 +204,17 @@
           v.controls = true; v.muted = true; v.loop = true; v.playsInline = true;
           v.setAttribute('aria-label', media.getAttribute('aria-label') || '');
           v.addEventListener('loadedmetadata', () => { v.currentTime = media.currentTime || 0; }, { once: true });
+          v.addEventListener('loadeddata', loaded, { once: true });
+          if (v.poster) { const probe = new Image(); probe.onload = loaded; probe.src = v.poster; }
           stage.appendChild(v);
           if (!still) v.play().catch(() => {});
         } else {
           const img = new Image();
           const fallback = media.currentSrc || media.src;
           img.alt = media.alt;
-          img.addEventListener('error', () => { if (img.src !== fallback) img.src = fallback; });
+          img.addEventListener('error', () => { if (img.src !== fallback) img.src = fallback; else loaded(); });
           img.addEventListener('load', () => {
+            loaded();
             img.classList.toggle('can-zoom', img.naturalWidth > stage.clientWidth || img.naturalHeight > stage.clientHeight);
           });
           img.addEventListener('click', (e) => {
@@ -178,6 +246,7 @@
 
       box.addEventListener('close', () => {
         stage.replaceChildren();  // also stops a playing clip
+        stage.classList.remove('is-loading');
         document.documentElement.style.overflow = '';
         document.dispatchEvent(new CustomEvent('viewer-close'));
         if (opener && opener.focus) opener.focus();

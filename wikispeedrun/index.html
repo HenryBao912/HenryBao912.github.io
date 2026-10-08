@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hb-intro'))document.documentElement.classList.add('seen')}catch(e){}</script>
 <title>WikiSpeedrun · Henry Bao</title>
 <meta name="description" content="A browser game where players race each other through Wikipedia using only in-article links.">
 <link rel="canonical" href="https://henrybao912.github.io/wikispeedrun/">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body class="page-project">
+<div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
 
 <a class="skip" href="#main">Skip to content</a>
 <header class="topbar">
@@ -43,7 +45,7 @@
       <div class="grid project-head">
         <div class="project-title">
           <h1 id="wikispeedrun-title">WikiSpeedrun</h1>
-          <p class="meta">Node.js · Server-Sent Events · Live</p>
+          <p class="meta">Node.js · Server-Sent Events · Live</p>
         </div>
         <div class="project-copy">
           <p>A browser game where players race each other through Wikipedia using only in-article links. Room-code lobbies with live position and timer sync, and three game modes. I built all of it: the server, the real-time layer, and the analytics stack behind it.</p>
@@ -59,15 +61,15 @@
       <!-- One four-player race, shown from three screens -->
       <div class="panels">
         <figure class="panel panel-main">
-          <video src="../assets/wsr-race.mp4" poster="../assets/wsr-race-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="A four-player race from Sushi to Lunar Roving Vehicle. The view pushes in on the progress bar as each player's pill moves toward the finish line, then pulls back for the winning click and the results screen."></video>
+          <video src="../assets/wsr-race.mp4" poster="../assets/wsr-race-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="A four-player race from Sushi to Lunar Roving Vehicle. The view pushes in on the progress bar as each player's pill moves toward the finish line, then pulls back for the winning click and the results screen."></video>
           <figcaption class="panel-label">Race</figcaption>
         </figure>
         <figure class="panel">
-          <img data-full src="../assets/wsr-lobby.jpg" alt="The lobby: room code 846E6, four players, and Classic mode selected." width="1120" height="630" loading="lazy">
+          <img data-full src="../assets/wsr-lobby.jpg" alt="The lobby: room code 846E6, four players, and Classic mode selected." width="1120" height="630">
           <figcaption class="panel-label">Lobby</figcaption>
         </figure>
         <figure class="panel">
-          <img data-full src="../assets/wsr-results.jpg" alt="The results screen: each player's path with the hop count after every click, ranked." width="1120" height="630" loading="lazy">
+          <img data-full src="../assets/wsr-results.jpg" alt="The results screen: each player's path with the hop count after every click, ranked." width="1120" height="630">
           <figcaption class="panel-label">Results</figcaption>
         </figure>
       </div>
@@ -148,7 +150,7 @@
           </div>
           <div>
             <dt>Distance without a round trip</dt>
-            <dd>When a race starts, the server maps the target’s neighbourhood: every article that links to it, then a sample of the articles that link to those. Each click is scored against those sets in memory, with a live lookup for anything the sample misses.</dd>
+            <dd>When a race starts, the server maps the target’s neighborhood: every article that links to it, then a sample of the articles that link to those. Each click is scored against those sets in memory, with a live lookup for anything the sample misses.</dd>
           </div>
           <div>
             <dt>A careful Wikipedia client</dt>
@@ -172,7 +174,7 @@
         </li>
         <li class="stage">
           <span class="stage-label">Shipped</span>
-          <div class="shot"><video src="../assets/wsr-shipped.mp4" poster="../assets/wsr-shipped-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The shipped game: choosing Earth and Moon, racing through the Earth article, and the results screen."></video></div>
+          <div class="shot"><video src="../assets/wsr-shipped.mp4" poster="../assets/wsr-shipped-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The shipped game: choosing Earth and Moon, racing through the Earth article, and the results screen."></video></div>
         </li>
       </ol>
     </div>

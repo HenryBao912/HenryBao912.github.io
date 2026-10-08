@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hb-intro'))document.documentElement.classList.add('seen')}catch(e){}</script>
 <title>Halfway Home · Henry Bao</title>
 <meta name="description" content="A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time.">
 <link rel="canonical" href="https://henrybao912.github.io/halfway-home/">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body class="page-project">
+<div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
 
 <a class="skip" href="#main">Skip to content</a>
 <header class="topbar">
@@ -43,7 +45,7 @@
       <div class="grid project-head">
         <div class="project-title">
           <h1 id="halfway-home-title">Halfway Home</h1>
-          <p class="meta">Unity 6.3 · C# · Netcode for GameObjects · Coming to Steam 2026</p>
+          <p class="meta">Unity 6.3 · C# · Netcode for GameObjects · Coming to Steam 2026</p>
         </div>
         <div class="project-copy">
           <p>A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time, on a dwindling oxygen budget. Two players carry a single rigid body with physics replicated between them, which is the problem the rest of the game is built around.</p>
@@ -59,15 +61,15 @@
       <!-- Three places in the current build -->
       <div class="panels">
         <figure class="panel panel-main">
-          <video src="../assets/hh-arch.mp4" poster="../assets/hh-arch-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking toward the Sky Arch with the sun behind it. Turning to face it shows the callout Discovered Sky Arch, then the walk continues under the arch, with sky visible through the rock."></video>
+          <video src="../assets/hh-arch.mp4" poster="../assets/hh-arch-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Walking toward the Sky Arch with the sun behind it. Turning to face it shows the callout Discovered Sky Arch, then the walk continues under the arch, with sky visible through the rock."></video>
           <figcaption class="panel-label">Environment</figcaption>
         </figure>
         <figure class="panel">
-          <video src="../assets/hh-deep.mp4" poster="../assets/hh-deep-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking out of the sunlit desert into a dark slot canyon whose floor glows with teal and lilac pools."></video>
+          <video src="../assets/hh-deep.mp4" poster="../assets/hh-deep-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Walking out of the sunlit desert into a dark slot canyon whose floor glows with teal and lilac pools."></video>
           <figcaption class="panel-label">Landmarks</figcaption>
         </figure>
         <figure class="panel">
-          <video src="../assets/hh-boneyard.mp4?v=4" poster="../assets/hh-boneyard-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking in under a giant petrified rib cage, then turning as the predator walks out of the alien trees."></video>
+          <video src="../assets/hh-boneyard.mp4?v=4" poster="../assets/hh-boneyard-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Walking in under a giant petrified rib cage, then turning as the predator walks out of the alien trees."></video>
           <figcaption class="panel-label">Enemy AI</figcaption>
         </figure>
       </div>
@@ -76,7 +78,7 @@
       <!-- The rover -->
       <div class="panels panels-next panels-solo">
         <figure class="panel panel-main">
-          <video src="../assets/hh-rover.mp4" poster="../assets/hh-rover-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The rover: a tracking shot alongside the yellow two-seat buggy as it drives across orange dunes past the Boneyard, then a fixed shot as it drives out under the Sky Arch toward the camera and past it."></video>
+          <video src="../assets/hh-rover.mp4" poster="../assets/hh-rover-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The rover: a tracking shot alongside the yellow two-seat buggy as it drives across orange dunes past the Boneyard, then a fixed shot as it drives out under the Sky Arch toward the camera and past it."></video>
           <figcaption class="panel-label">Rover</figcaption>
         </figure>
       </div>
@@ -85,19 +87,19 @@
       <!-- Two players, one load -->
       <div class="panels panels-next panels-pair">
         <figure class="panel panel-main">
-          <video src="../assets/hh-haul.mp4?v=2" poster="../assets/hh-haul-poster.jpg?v=2" muted loop playsinline autoplay preload="metadata" aria-label="Two astronauts grip a ship part with ropes and drag it across the sand together, past the hull and a giant engine pipe of a crashed freighter."></video>
+          <video src="../assets/hh-haul.mp4?v=2" poster="../assets/hh-haul-poster.jpg?v=2" muted loop playsinline data-autoplay preload="none" aria-label="Two astronauts grip a ship part with ropes and drag it across the sand together, past the hull and a giant engine pipe of a crashed freighter."></video>
           <figcaption class="panel-label">Co-op haul</figcaption>
         </figure>
         <figure class="panel panel-main">
-          <video src="../assets/hh-tow.mp4" poster="../assets/hh-tow-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The rover drives across the dunes towing a ship part on a dark cable. The cable pays out to full length, then reels back in until the part is right behind the rover, flashing red as it takes the strain."></video>
+          <video src="../assets/hh-tow.mp4" poster="../assets/hh-tow-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The rover drives across the dunes towing a ship part on a dark cable. The cable pays out to full length, then reels back in until the part is right behind the rover, flashing red as it takes the strain."></video>
           <figcaption class="panel-label">Tow and winch</figcaption>
         </figure>
       </div>
-      <p class="caption">Hauling together. Each grip is a physics rope from a player's hand to the part, and the server simulates the load, so it drags and swings behind whoever is pulling. On the rover the driver tows while the passenger works the winch: here the cable pays out to its full 10 m and is reeled back in, turning red as it takes the strain. In both clips the second player is a separate copy of the game connected over the network.</p>
+      <p class="caption">Hauling together. Each grip is a physics rope from a player’s hand to the part, and the server simulates the load, so it drags and swings behind whoever is pulling. On the rover the driver tows while the passenger works the winch: here the cable pays out to its full 10 m and is reeled back in, turning red as it takes the strain. In both clips the second player is a separate copy of the game connected over the network.</p>
 
       <div class="panels panels-next panels-solo">
         <figure class="panel panel-main panel-ultrawide">
-          <video src="../assets/hh-screens.mp4" poster="../assets/hh-screens-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Two first-person screens side by side. On the left, the host holds a power core on a rope as their partner walks up and grabs it; on the right, the partner sees the host holding the same core. Then both pull it across the sand, each seeing the other on their own screen."></video>
+          <video src="../assets/hh-screens.mp4" poster="../assets/hh-screens-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Two first-person screens side by side. On the left, the host holds a power core on a rope as their partner walks up and grabs it; on the right, the partner sees the host holding the same core. Then both pull it across the sand, each seeing the other on their own screen."></video>
           <figcaption class="panel-label">Both screens</figcaption>
         </figure>
       </div>
@@ -106,15 +108,15 @@
       <!-- Building, the map, and the way out -->
       <div class="panels panels-next">
         <figure class="panel panel-main">
-          <video src="../assets/hh-build.mp4" poster="../assets/hh-build-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Base building: a teal ghost shows where each piece will land, and floors, walls, windows and a roof snap onto a grid until a small hut stands in the desert."></video>
+          <video src="../assets/hh-build.mp4" poster="../assets/hh-build-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Base building: a teal ghost shows where each piece will land, and floors, walls, windows and a roof snap onto a grid until a small hut stands in the desert."></video>
           <figcaption class="panel-label">Base building</figcaption>
         </figure>
         <figure class="panel">
-          <video src="../assets/hh-leaving.mp4" poster="../assets/hh-leaving-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The ending: a flyover of the camp, then the camera settles behind the crew's hut with the rover parked beside it as the repaired ship lifts off on three jets and climbs away, before an overhead view of the land falling away below."></video>
+          <video src="../assets/hh-leaving.mp4" poster="../assets/hh-leaving-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The ending: a flyover of the camp, then the camera settles behind the crew's hut with the rover parked beside it as the repaired ship lifts off on three jets and climbs away, before an overhead view of the land falling away below."></video>
           <figcaption class="panel-label">Ending</figcaption>
         </figure>
         <figure class="panel">
-          <video src="../assets/hh-map.mp4" poster="../assets/hh-map-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The map: walking up to a table at the wreck, the hologram planet rises to eye level, turns and zooms, with pins for discovered landmarks and ship parts, then settles back onto the table."></video>
+          <video src="../assets/hh-map.mp4" poster="../assets/hh-map-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The map: walking up to a table at the wreck, the hologram planet rises to eye level, turns and zooms, with pins for discovered landmarks and ship parts, then settles back onto the table."></video>
           <figcaption class="panel-label">Map</figcaption>
         </figure>
       </div>
@@ -126,14 +128,14 @@
         <dl class="build-list">
           <div>
             <dt>The host owns the physics</dt>
-            <dd>My first networked test let each player own their own body, and the second player’s grip snapped as soon as they moved. So every rigid body now runs on the host. Each grip is a <code>ConfigurableJoint</code>, so two players on one 107 kg battery are two springs pulling on the same body, and both screens show the host’s result.</dd>
+            <dd>My first networked test let each player simulate their own body, and the second player’s grip snapped as soon as they moved. So every rigid body now runs on the host. Each grip is a <code>ConfigurableJoint</code>, so two players on one 107 kg battery are two springs pulling on the same body, and both screens show the host’s result.</dd>
           </div>
           <div>
             <dt>Tested against a real second player</dt>
             <dd>A standalone build joins the editor as player two and plays from a script: hauling, installing a part together, driving, voting to leave. It also records screenshots and frame times from inside the build at the Steam Deck’s resolution. 517 automated tests sit underneath.</dd>
           </div>
           <div>
-            <dt>Geometry built to the design document</dt>
+            <dt>Geometry built to the art bible</dt>
             <dd>The art bible asks for an arch about 15 m across with 8 m of headroom, and for a deep zone whose floor never sees the sun. Both are procedural meshes generated to those numbers, and unit tests measure the result: the arch’s clearance, and how much floor a canyon wall shades at the game’s sun angle.</dd>
           </div>
           <div>
@@ -154,15 +156,15 @@
       <ol class="stages stages-vertical" aria-label="Halfway Home in development">
         <li class="stage">
           <span class="stage-label">Prototype</span>
-          <div class="shot"><video src="../assets/hh-prototype.mp4" poster="../assets/hh-prototype-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The prototype: two capsules walk to a crate, grip it with ropes and haul it across a grey whitebox floor toward a target zone, with the prototype's debug panel in the corner."></video></div>
+          <div class="shot"><video src="../assets/hh-prototype.mp4" poster="../assets/hh-prototype-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The prototype: two capsules walk to a crate, grip it with ropes and haul it across a gray whitebox floor toward a target zone, with the prototype's debug panel in the corner."></video></div>
         </li>
         <li class="stage">
           <span class="stage-label">Systems pass</span>
-          <div class="shot"><video src="../assets/hh-systems.mp4" poster="../assets/hh-systems-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Systems pass: one player hauls a battery away from the crashed ship."></video></div>
+          <div class="shot"><video src="../assets/hh-systems.mp4" poster="../assets/hh-systems-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Systems pass: one player hauls a battery away from the crashed ship."></video></div>
         </li>
         <li class="stage">
           <span class="stage-label">Current build</span>
-          <div class="shot"><video src="../assets/hh-current.mp4" poster="../assets/hh-current-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Current build: two players carry one crate together across the desert toward the ship."></video></div>
+          <div class="shot"><video src="../assets/hh-current.mp4" poster="../assets/hh-current-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="Current build: two players carry one crate together across the desert toward the ship."></video></div>
         </li>
       </ol>
       <p class="caption">Three points in development. The prototype took two days and answered one question, whether hauling a heavy crate together is fun, with two capsules on one keyboard and no netcode; it also settled the game’s gravity at 0.75 g. Then the networked systems pass, then art.</p>

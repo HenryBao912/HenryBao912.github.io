@@ -39,6 +39,7 @@
   // the page more than three seconds after navigation began.
   const loader = document.querySelector('.loader');
   const root = document.documentElement;
+  let introDone = Promise.resolve();
   if (loader && !root.classList.contains('seen') && !still) {
     const firstScreen = frames.filter((f) => {
       const r = f.getBoundingClientRect();
@@ -48,13 +49,25 @@
     if (document.fonts) waits.push(document.fonts.ready);
     waits.push(new Promise((r) => setTimeout(r, Math.max(0, 1000 - performance.now()))));
     const cap = new Promise((r) => setTimeout(r, Math.max(0, 3000 - performance.now())));
-    Promise.race([Promise.all(waits), cap]).then(() => {
+    introDone = Promise.race([Promise.all(waits), cap]).then(() => {
       try { sessionStorage.setItem('hb-intro', '1'); } catch (e) { /* private mode: show it again next time */ }
       loader.style.animation = 'none';
       loader.style.transition = 'opacity 0.45s ease';
       loader.style.opacity = '0';
-      setTimeout(() => loader.classList.add('is-gone'), 500);
+      return new Promise((r) => setTimeout(() => { loader.classList.add('is-gone'); r(); }, 500));
     });
+  }
+
+  // Hutong After Rain: its photographs are night scenes, so once the page has opened (and the intro
+  // has cleared, if it was showing) the ground slowly dims to night. See "Night" in site.css.
+  // Reduced motion gets the dark page straight away.
+  if (document.body.hasAttribute('data-night')) {
+    const toNight = () => {
+      if (still) { root.classList.add('night', 'night-scheme'); return; }
+      root.classList.add('night-fade', 'night');
+      setTimeout(() => root.classList.add('night-scheme'), 1300);
+    };
+    introDone.then(() => setTimeout(toNight, still ? 0 : 400));
   }
 
   // WikiSpeedrun's route table scrolls sideways on narrow screens: fade the edge that hides columns.

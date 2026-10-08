@@ -30,6 +30,16 @@
   color-scheme: light;
 }
 
+/* Registered as colors so the night fade on the Hutong page can transition them (see "Night" below). */
+@property --paper { syntax: "<color>"; inherits: true; initial-value: #eceef2; }
+@property --panel { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --ink { syntax: "<color>"; inherits: true; initial-value: #202122; }
+@property --muted { syntax: "<color>"; inherits: true; initial-value: #50565e; }
+@property --rule { syntax: "<color>"; inherits: true; initial-value: #c4c9d1; }
+@property --link { syntax: "<color>"; inherits: true; initial-value: #3157c4; }
+@property --visited { syntax: "<color>"; inherits: true; initial-value: #6a4ca6; }
+@property --screen { syntax: "<color>"; inherits: true; initial-value: #0f1013; }
+
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
@@ -52,9 +62,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .skip {
   position: absolute; left: var(--gutter); top: -3rem; z-index: 20;
   font-family: var(--display); font-size: var(--s0); font-weight: 600;
-  background: var(--ink); color: #ffffff; padding: 0.5rem 0.8rem; border-radius: 4px; text-decoration: none;
+  background: var(--ink); color: var(--paper); padding: 0.5rem 0.8rem; border-radius: 4px; text-decoration: none;
 }
-.skip:visited { color: #ffffff; }
+.skip:visited { color: var(--paper); }
 .skip:focus { top: 0.75rem; }
 
 /* ——— Top bar on project pages: home on the left, every project on the right ——— */
@@ -172,7 +182,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
   padding: 0.35rem 0.75rem; border-radius: 4px; background: var(--panel); color: var(--ink); white-space: nowrap;
 }
 .stage:first-child .stage-label { background: var(--ink); color: var(--paper); }
-.stage:last-child:not(:first-child) .stage-label { background: var(--link); color: #ffffff; }
+.stage:last-child:not(:first-child) .stage-label { background: var(--link); color: var(--paper); }
 
 .shot { background: var(--screen); border-radius: 4px; overflow: hidden; aspect-ratio: 16 / 9; }
 .shot img, .shot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
@@ -260,7 +270,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .hop b { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--muted); }
 .hop.near { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--link); }
 .hop.near b { color: var(--link); }
-.hop.goal { background: var(--link); color: #ffffff; font-weight: 600; }
+.hop.goal { background: var(--link); color: var(--paper); font-weight: 600; }
 .routes-key { font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
 .routes-key .hop { margin-right: 0.4rem; }
 
@@ -293,7 +303,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
   border: 0; border-radius: 4px; padding: 0.4rem 0.7rem; box-shadow: inset 0 0 0 1px var(--rule);
 }
 .renderer button:hover { color: var(--ink); }
-.renderer button[aria-pressed="true"] { background: var(--ink); color: #ffffff; box-shadow: none; }
+.renderer button[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
 
 
 .credits { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1rem; }
@@ -339,11 +349,11 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   padding: 0.35rem 0.75rem; border: 0; border-radius: 4px; background: var(--panel); color: var(--ink);
 }
 .carousel-tabs button:hover { box-shadow: inset 0 0 0 1px var(--rule); }
-.carousel-tabs button[aria-current="true"] { background: var(--ink); color: #ffffff; box-shadow: none; }
+.carousel-tabs button[aria-current="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
 /* The active label doubles as the timer: a line fills along its foot, and when it is full the
    slideshow moves on. Pausing the animation pauses the slideshow, with no clock to drift. */
 .carousel-tabs button[aria-current="true"]::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgb(255 255 255 / 0.85);
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--paper); opacity: 0.85;
   transform-origin: left; animation: carousel-progress var(--interval) linear forwards;
 }
 .carousel:is(.is-paused, .is-hovered, .is-focused, .is-viewing, .is-offscreen) .carousel-tabs button[aria-current="true"]::after {
@@ -433,7 +443,7 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   border: 0; border-radius: 4px; padding: 0.4rem 0.65rem; white-space: nowrap;
 }
 .lightbox-switch button:hover { color: #ffffff; }
-.lightbox-switch button[aria-pressed="true"] { background: #f1f2f4; color: var(--ink); }
+.lightbox-switch button[aria-pressed="true"] { background: #f1f2f4; color: #202122; }
 .lightbox-switch button:focus-visible { outline: 2px solid #8cacff; outline-offset: 1px; }
 .lightbox-count { min-width: 4.5em; text-align: center; color: rgb(241 242 244 / 0.6); font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .zoom-hint { transition: none; } }
@@ -484,6 +494,35 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .js .loader { display: none; }
   .panel::before, .shot::before, .tile-media::before, .carousel-slide::before, .lightbox-stage.is-loading::before { animation: none; }
 }
+
+/* ——— Night: the Hutong After Rain page dims to a dark ground once it opens ———
+   Its photographs are night scenes and read best on dark. The script adds .night-fade and .night,
+   then .night-scheme (dark scrollbars and controls) at the fade's midpoint. The ground fades slowly;
+   the text flips quickly while the ground passes the middle, so it is never hard to read for long. */
+:root.night {
+  --paper: #101318;   /* wet slate, close to the night sky in the renders */
+  --panel: #1c2028;
+  --ink: #e7e9ee;
+  --muted: #9ba2ad;
+  --rule: #2b313b;
+  --link: #8fb0ff;
+  --visited: #c4a8f5;
+  --screen: #07080b;
+}
+:root.night-scheme { color-scheme: dark; }
+:root.night-fade {
+  transition:
+    --paper 2.6s cubic-bezier(0.65, 0, 0.35, 1),
+    --panel 2.6s cubic-bezier(0.65, 0, 0.35, 1),
+    --rule 2.6s cubic-bezier(0.65, 0, 0.35, 1),
+    --screen 2.6s cubic-bezier(0.65, 0, 0.35, 1),
+    --ink 0.6s ease 1s,
+    --muted 0.6s ease 1s,
+    --link 0.6s ease 1s,
+    --visited 0.6s ease 1s;
+}
+/* On the dark ground, a faint edge keeps dark photographs from dissolving into the page. */
+:root.night :is(.panel, .carousel-frame) { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07); }
 
 /* ——— Narrow screens ——— */
 @media (max-width: 900px) {

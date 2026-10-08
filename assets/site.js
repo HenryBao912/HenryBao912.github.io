@@ -234,7 +234,10 @@
         if (media.tagName === 'VIDEO') {
           switcher.hidden = true;
           const v = document.createElement('video');
-          v.src = media.currentSrc || media.src;
+          // A clip with a larger copy in assets/full/ plays that one full screen, falling back to the page's copy.
+          const pageSrc = media.currentSrc || media.src;
+          v.src = media.hasAttribute('data-full') ? pageSrc.replace('/assets/', '/assets/full/') : pageSrc;
+          v.addEventListener('error', () => { if (v.src !== pageSrc) { v.src = pageSrc; v.play().catch(() => {}); } }, { once: true });
           v.poster = media.poster;
           v.controls = true; v.muted = true; v.loop = true; v.playsInline = true;
           v.setAttribute('aria-label', media.getAttribute('aria-label') || '');

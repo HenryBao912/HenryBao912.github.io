@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Halfway Home · Henry Bao</title>
+<meta name="description" content="A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time.">
+<link rel="canonical" href="https://henrybao912.github.io/halfway-home/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Henry Bao">
+<meta property="og:title" content="Halfway Home, by Henry Bao">
+<meta property="og:description" content="A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time.">
+<meta property="og:url" content="https://henrybao912.github.io/halfway-home/">
+<meta property="og:image" content="https://henrybao912.github.io/assets/home-halfway-home.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body class="page-project">
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="topbar-home" href="../">Henry Bao</a>
+    <nav aria-label="Projects">
+      <a href="../wikispeedrun/">WikiSpeedrun</a>
+      <a href="../halfway-home/" aria-current="page">Halfway Home</a>
+      <a href="../tripreview/">Tripreview</a>
+      <a href="../vj-system/">VJ System</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Halfway Home -->
+  <section class="project" id="halfway-home" aria-labelledby="halfway-home-title">
+    <div class="wrap">
+      <div class="grid project-head">
+        <div class="project-title">
+          <h1 id="halfway-home-title">Halfway Home</h1>
+          <p class="meta">Unity 6.3 · C# · Netcode for GameObjects · Coming to Steam 2026</p>
+        </div>
+        <div class="project-copy">
+          <p>A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time, on a dwindling oxygen budget. Two players carry a single rigid body with physics replicated between them, which is the problem the rest of the game is built around.</p>
+          <p>Around that core: a predator that hunts whoever falls behind, base building, a rover, a fabricator, sandstorms, a map table that shows the planet as a hologram, and landmarks to discover. I am building it alone with an AI-assisted workflow: I write the design document for each system, Claude Code implements it through a bridge into the Unity editor, and I check the result with automated tests and a scripted second player that joins a real build.</p>
+          <dl class="stats">
+            <div><dt>system design documents</dt><dd>21</dd></div>
+            <div><dt>automated tests</dt><dd>517</dd></div>
+            <div><dt>lighting moods</dt><dd>9</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Three places in the current build -->
+      <div class="panels">
+        <figure class="panel panel-main">
+          <video src="../assets/hh-arch.mp4" poster="../assets/hh-arch-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking toward the Sky Arch with the sun behind it. Turning to face it shows the callout Discovered Sky Arch, then the walk continues under the arch, with sky visible through the rock."></video>
+          <figcaption class="panel-label">Environment</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="../assets/hh-deep.mp4" poster="../assets/hh-deep-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking out of the sunlit desert into a dark slot canyon whose floor glows with teal and lilac pools."></video>
+          <figcaption class="panel-label">Landmarks</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="../assets/hh-boneyard.mp4?v=4" poster="../assets/hh-boneyard-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Walking in under a giant petrified rib cage, then turning as the predator walks out of the alien trees."></video>
+          <figcaption class="panel-label">Enemy AI</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Three places in the current build. The Sky Arch is sited by its approach: the level tool searches the map for open ground with a clear 150 m path heading straight into the sun, so the arch first appears as a silhouette. The Deep Cut is a canyon whose walls put its floor in real shadow, lit from below by pulsing pools. At the Boneyard the predator comes out of the trees; its attacks are held off for this recording. All three are raw capture from the editor, with the long walks sped up.</p>
+
+      <!-- The rover -->
+      <div class="panels panels-next panels-solo">
+        <figure class="panel panel-main">
+          <video src="../assets/hh-rover.mp4" poster="../assets/hh-rover-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The rover: a tracking shot alongside the yellow two-seat buggy as it drives across orange dunes past the Boneyard, then a fixed shot as it drives out under the Sky Arch toward the camera and past it."></video>
+          <figcaption class="panel-label">Rover</figcaption>
+        </figure>
+      </div>
+      <p class="caption">The rover is a salvaged buggy built on its own physics: an 800 kg rigidbody on four raycast springs, all-wheel drive, no wheel colliders, and no automatic righting if you roll it. One player drives while the other works the winch. Cargo rides in the bed, where its weight sinks the suspension, or on a tow rope that drags, swings and can snap. The server runs the simulation and both screens follow it.</p>
+
+      <!-- Two players, one load -->
+      <div class="panels panels-next panels-pair">
+        <figure class="panel panel-main">
+          <video src="../assets/hh-haul.mp4?v=2" poster="../assets/hh-haul-poster.jpg?v=2" muted loop playsinline autoplay preload="metadata" aria-label="Two astronauts grip a ship part with ropes and drag it across the sand together, past the hull and a giant engine pipe of a crashed freighter."></video>
+          <figcaption class="panel-label">Co-op haul</figcaption>
+        </figure>
+        <figure class="panel panel-main">
+          <video src="../assets/hh-tow.mp4" poster="../assets/hh-tow-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The rover drives across the dunes towing a ship part on a dark cable. The cable pays out to full length, then reels back in until the part is right behind the rover, flashing red as it takes the strain."></video>
+          <figcaption class="panel-label">Tow and winch</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Hauling together. Each grip is a physics rope from a player's hand to the part, and the server simulates the load, so it drags and swings behind whoever is pulling. On the rover the driver tows while the passenger works the winch: here the cable pays out to its full 10 m and is reeled back in, turning red as it takes the strain. In both clips the second player is a separate copy of the game connected over the network.</p>
+
+      <div class="panels panels-next panels-solo">
+        <figure class="panel panel-main panel-ultrawide">
+          <video src="../assets/hh-screens.mp4" poster="../assets/hh-screens-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Two first-person screens side by side. On the left, the host holds a power core on a rope as their partner walks up and grabs it; on the right, the partner sees the host holding the same core. Then both pull it across the sand, each seeing the other on their own screen."></video>
+          <figcaption class="panel-label">Both screens</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Both screens at the same moment. Left is the host, right is the second player, each running their own copy of the game. Physics runs on the host and the other machine draws what it is sent, so both players see the same core, on the same ropes, in the same place. Each machine stamped its frames with the clock time, and the two recordings were lined up afterwards.</p>
+
+      <!-- Building, the map, and the way out -->
+      <div class="panels panels-next">
+        <figure class="panel panel-main">
+          <video src="../assets/hh-build.mp4" poster="../assets/hh-build-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Base building: a teal ghost shows where each piece will land, and floors, walls, windows and a roof snap onto a grid until a small hut stands in the desert."></video>
+          <figcaption class="panel-label">Base building</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="../assets/hh-leaving.mp4" poster="../assets/hh-leaving-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The ending: a flyover of the camp, then the camera settles behind the crew's hut with the rover parked beside it as the repaired ship lifts off on three jets and climbs away, before an overhead view of the land falling away below."></video>
+          <figcaption class="panel-label">Ending</figcaption>
+        </figure>
+        <figure class="panel">
+          <video src="../assets/hh-map.mp4" poster="../assets/hh-map-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The map: walking up to a table at the wreck, the hologram planet rises to eye level, turns and zooms, with pins for discovered landmarks and ship parts, then settles back onto the table."></video>
+          <figcaption class="panel-label">Map</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Building, finding your way, and leaving. Press B and pieces snap to a 5 m grid; the server checks each placement and takes the cost from what you are carrying. There is no minimap: the map is a hologram over a table at the wreck that rises to eye level when you read it, with pins for whatever the crew has found. Once the ship is whole both players vote to leave, every machine plays the same ending in step, and if you built a base the ending frames it.*</p>
+      <p class="footnote">*For these recordings the hut was built by a script through the real build-mode input, the map was shown with everything already discovered, and the ship was set to ready so the ending could play without collecting the parts first.</p>
+
+      <div class="build" aria-labelledby="hh-build-title">
+        <h2 id="hh-build-title">How it’s built</h2>
+        <dl class="build-list">
+          <div>
+            <dt>The host owns the physics</dt>
+            <dd>My first networked test let each player own their own body, and the second player’s grip snapped as soon as they moved. So every rigid body now runs on the host. Each grip is a <code>ConfigurableJoint</code>, so two players on one 107 kg battery are two springs pulling on the same body, and both screens show the host’s result.</dd>
+          </div>
+          <div>
+            <dt>Tested against a real second player</dt>
+            <dd>A standalone build joins the editor as player two and plays from a script: hauling, installing a part together, driving, voting to leave. It also records screenshots and frame times from inside the build at the Steam Deck’s resolution. 517 automated tests sit underneath.</dd>
+          </div>
+          <div>
+            <dt>Geometry built to the design document</dt>
+            <dd>The art bible asks for an arch about 15 m across with 8 m of headroom, and for a deep zone whose floor never sees the sun. Both are procedural meshes generated to those numbers, and unit tests measure the result: the arch’s clearance, and how much floor a canyon wall shades at the game’s sun angle.</dd>
+          </div>
+          <div>
+            <dt>A test setup that shipped</dt>
+            <dd>To run two players on one machine, the host was locked to the keyboard and the second player to a gamepad and the arrow keys. That split was reaching builds, where a Steam Deck host couldn’t move. Builds now give every player every local device; the split only exists in the editor.</dd>
+          </div>
+          <div>
+            <dt>Saves that know which crystal you took</dt>
+            <dd>Gatherable nodes were saved under one name per type, so while any crystal survived a save, every crystal came back on load. Each node now saves under its own scene identity, and saves record a content version so newer content isn’t mistaken for something already gathered.</dd>
+          </div>
+          <div>
+            <dt>When a partner drops</dt>
+            <dd>A disconnected player’s body is held for 90 seconds in case they rejoin. The predator and wildlife freeze while the host waits, and if the partner doesn’t come back the host chooses to continue solo or save and quit. Before this, the body stayed forever, still holding whatever it carried.</dd>
+          </div>
+        </dl>
+      </div>
+
+      <ol class="stages stages-vertical" aria-label="Halfway Home in development">
+        <li class="stage">
+          <span class="stage-label">Prototype</span>
+          <div class="shot"><video src="../assets/hh-prototype.mp4" poster="../assets/hh-prototype-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The prototype: two capsules walk to a crate, grip it with ropes and haul it across a grey whitebox floor toward a target zone, with the prototype's debug panel in the corner."></video></div>
+        </li>
+        <li class="stage">
+          <span class="stage-label">Systems pass</span>
+          <div class="shot"><video src="../assets/hh-systems.mp4" poster="../assets/hh-systems-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Systems pass: one player hauls a battery away from the crashed ship."></video></div>
+        </li>
+        <li class="stage">
+          <span class="stage-label">Current build</span>
+          <div class="shot"><video src="../assets/hh-current.mp4" poster="../assets/hh-current-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Current build: two players carry one crate together across the desert toward the ship."></video></div>
+        </li>
+      </ol>
+      <p class="caption">Three points in development. The prototype took two days and answered one question, whether hauling a heavy crate together is fun, with two capsules on one keyboard and no netcode; it also settled the game’s gravity at 0.75 g. Then the networked systems pass, then art.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="pagenav" aria-label="More projects">
+  <div class="wrap">
+    <div class="pagenav-row">
+      <a class="pagenav-link prev" href="../wikispeedrun/" rel="prev"><span>Previous project</span><b>WikiSpeedrun</b></a>
+      <a class="pagenav-link next" href="../tripreview/" rel="next"><span>Next project</span><b>Tripreview</b></a>
+    </div>
+    <p class="pagenav-foot"><a href="../">All projects</a><span>The <kbd>←</kbd> and <kbd>→</kbd> keys move between projects.</span></p>
+  </div>
+</nav>
+
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

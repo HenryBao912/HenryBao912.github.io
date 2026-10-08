@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tripreview · Henry Bao</title>
+<meta name="description" content="A travel web application built on a curated place database rather than scraped listings.">
+<link rel="canonical" href="https://henrybao912.github.io/tripreview/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Henry Bao">
+<meta property="og:title" content="Tripreview, by Henry Bao">
+<meta property="og:description" content="A travel web application built on a curated place database rather than scraped listings.">
+<meta property="og:url" content="https://henrybao912.github.io/tripreview/">
+<meta property="og:image" content="https://henrybao912.github.io/assets/home-tripreview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body class="page-project">
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="topbar-home" href="../">Henry Bao</a>
+    <nav aria-label="Projects">
+      <a href="../wikispeedrun/">WikiSpeedrun</a>
+      <a href="../halfway-home/">Halfway Home</a>
+      <a href="../tripreview/" aria-current="page">Tripreview</a>
+      <a href="../vj-system/">VJ System</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Tripreview -->
+  <section class="project" id="tripreview" aria-labelledby="tripreview-title">
+    <div class="wrap">
+      <div class="grid project-head">
+        <div class="project-title">
+          <h1 id="tripreview-title">Tripreview</h1>
+          <p class="meta">Next.js · TypeScript · Postgres · Live</p>
+        </div>
+        <div class="project-copy">
+          <p>A travel web application built on a curated place database rather than scraped listings. I built the schema, the data pipeline, the type system and the front end, and designed the editorial system it is laid out in.</p>
+          <p>You pick a corner of Southern California on a map, say how long you have and what kind of day you want, and it plans the day from coffee to dinner in an order that keeps travel short, laid out like a magazine page you can share.</p>
+          <dl class="stats">
+            <div><dt>curated places</dt><dd>1,108</dd></div>
+            <div><dt>region guides</dt><dd>30</dd></div>
+          </dl>
+          <a class="visit" href="https://tripreview.app">tripreview.app</a>
+        </div>
+      </div>
+
+      <!-- A trip and its stop list -->
+      <div class="panels">
+        <figure class="panel panel-main">
+          <img src="../assets/tp-storyboard.jpg" alt="A generated trip, A Slow Laguna Saturday: an 11-hour, six-stop day on about two miles of walking, set beside a photo of a cliffside house above the surf." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Trip</figcaption>
+        </figure>
+        <figure class="panel panel-tall">
+          <picture>
+            <source media="(max-width: 900px)" srcset="../assets/tp-plan-list.jpg">
+            <img src="../assets/tp-stoplist.jpg" alt="The stop list for A Slow Laguna Saturday: six stops from Moulin at 8:30am to Studio at 7:30pm, each with its time, category, rating and review count." width="900" height="1053" loading="lazy">
+          </picture>
+          <figcaption class="panel-label">Stop list</figcaption>
+        </figure>
+      </div>
+      <p class="caption">A generated trip and its stop list: each stop’s time, category, rating and tier, from coffee at 8:30am to dinner at 7:30pm. Stops can be dragged into a new order, or tapped to swap them or change their type.</p>
+
+      <!-- Inside a trip -->
+      <div class="panels panels-next">
+        <figure class="panel panel-main">
+          <img src="../assets/tp-stop.jpg" alt="The first stop, Moulin in Laguna Beach at 8:30am: a photo of the cafe counter, a caption, what to order, and the drive to the next stop." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Stop</figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="../assets/tp-mobile.jpg" alt="The same trip on a phone: the opening spread and the first stop." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Mobile</figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="../assets/tripreview.jpg" alt="Tripreview's one-day guide to Laguna Beach: a headline, a short introduction, and a row of photographed coffee shops." width="1600" height="900" loading="lazy">
+          <figcaption class="panel-label">Region guide</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Each stop says what to order and how far away the next one is. The site is designed for phones first, and every region has its own guide page written for search.</p>
+
+      <div class="build" aria-labelledby="tp-build-title">
+        <h2 id="tp-build-title">How it’s built</h2>
+        <dl class="build-list">
+          <div>
+            <dt>Ratings you can compare</dt>
+            <dd>Ratings go through a Bayesian average that treats every place as if it started with 100 reviews at 3.8 stars, so a 5.0 from six reviews can’t outrank a 4.7 from thousands. The same numbers sort places into tiers: a strong rating with under 100 reviews is a hidden gem, over 1,500 is a heavy hitter.</dd>
+          </div>
+          <div>
+            <dt>A day that holds together</dt>
+            <dd>Each trip length has a fixed shape: a full day is coffee, a walk, lunch, an activity, drinks and dinner. Each slot is a weighted draw on vibe match times rating to the power 2.5, halved for a place 3 km from the previous stop. Better places win more often, and regenerating still gives a different day.</dd>
+          </div>
+          <div>
+            <dt>Drafted by a model, approved by me</dt>
+            <dd>A discovery script finds well-rated places to fill gaps in each region, skipping anything already in the database by ID, by name, or by sitting within 70 m of one. Claude drafts each entry through a fixed schema, and every draft goes into a review file where I accept, edit or reject it before it is seeded.</dd>
+          </div>
+          <div>
+            <dt>Photos picked by eye</dt>
+            <dd>For every place the pipeline builds a contact sheet of up to six Google photos. I picked a calibration set of 14 by hand, the rest were picked to match and checked on a single review page, and the chosen three per place are resized and stored on Vercel Blob.</dd>
+          </div>
+          <div>
+            <dt>A gate on the writing</dt>
+            <dd>A script fails the launch if any copy a visitor can read contains an em dash or a word that reads as machine-written, like “delve”, “nestled” or “world-class”. It checks the source copy, the curated data files and the live database.</dd>
+          </div>
+          <div>
+            <dt>An audit, then fixes</dt>
+            <dd>A full product audit on 4 June scored the trip page 5 out of 10: the flagship trip had 18 stops and showed two coffees at 8:30am. The same day I trimmed it to a real six-stop day, made times follow each stop’s position, limited trips to the drawn area and built the two-column desktop layout.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="pagenav" aria-label="More projects">
+  <div class="wrap">
+    <div class="pagenav-row">
+      <a class="pagenav-link prev" href="../halfway-home/" rel="prev"><span>Previous project</span><b>Halfway Home</b></a>
+      <a class="pagenav-link next" href="../vj-system/" rel="next"><span>Next project</span><b>VJ System</b></a>
+    </div>
+    <p class="pagenav-foot"><a href="../">All projects</a><span>The <kbd>←</kbd> and <kbd>→</kbd> keys move between projects.</span></p>
+  </div>
+</nav>
+
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

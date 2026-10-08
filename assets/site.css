@@ -1,0 +1,344 @@
+/* Henry Bao, portfolio.
+   Layout: a left-aligned 12-column page. The home page is the name, a short introduction
+   and every project as a tile; each project then has its own page with the full case study.
+   Colour borrows hyperlink vocabulary: blue = a link, purple = a page you have already opened. */
+
+:root {
+  --paper: #eceef2;   /* cool grey ground, so white chips and dark footage sit forward */
+  --panel: #ffffff;
+  --ink: #202122;
+  --muted: #50565e;
+  --rule: #c4c9d1;
+  --link: #3157c4;
+  --visited: #6a4ca6;
+  --screen: #0f1013;
+
+  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --text: "Newsreader", "Iowan Old Style", Georgia, serif;
+
+  --s-1: 0.8125rem;  /* 13 */
+  --s0: 1rem;        /* 16 */
+  --s1: 1.1875rem;   /* 19, serif body */
+  --s2: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+  --s3: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  --s4: clamp(2.5rem, 1.5rem + 4.2vw, 5rem);
+  --s5: clamp(3.4rem, 1.5rem + 9vw, 10rem);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1280px;
+  /* One look for every reviewer: the page does not follow the OS dark setting. */
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--text); font-size: var(--s1); line-height: 1.6;
+  font-optical-sizing: auto; text-rendering: optimizeLegibility;
+}
+img, video { max-width: 100%; display: block; }
+h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.16em; }
+a:visited { color: var(--visited); }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+
+.wrap { max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+
+.skip {
+  position: absolute; left: var(--gutter); top: -3rem; z-index: 20;
+  font-family: var(--display); font-size: var(--s0); font-weight: 600;
+  background: var(--ink); color: #ffffff; padding: 0.5rem 0.8rem; border-radius: 4px; text-decoration: none;
+}
+.skip:visited { color: #ffffff; }
+.skip:focus { top: 0.75rem; }
+
+/* ——— Top bar on project pages: home on the left, every project on the right ——— */
+.topbar { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.topbar-inner {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem 2rem; flex-wrap: wrap;
+  padding-block: 0.85rem; font-family: var(--display); font-size: var(--s0); line-height: 1.3;
+}
+.topbar-home, .topbar-home:visited { color: var(--ink); font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+.topbar nav { display: flex; gap: 0.25rem 1.5rem; flex-wrap: wrap; }
+.topbar nav a, .topbar nav a:visited { color: var(--muted); text-decoration: none; white-space: nowrap; }
+.topbar nav a:hover { color: var(--ink); }
+.topbar nav a[aria-current="page"] {
+  color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.4em;
+}
+
+/* ——— Hero ——— */
+.hero { padding-block: clamp(3rem, 9vw, 8rem) clamp(3rem, 7vw, 6rem); }
+.hero h1 {
+  font-size: var(--s5); font-weight: 800; letter-spacing: -0.045em; line-height: 0.88;
+  margin-left: -0.04em;
+}
+.hero .grid { margin-top: clamp(2rem, 4.5vw, 3.75rem); row-gap: 1.5rem; }
+.standfirst {
+  grid-column: 1 / span 5;
+  font-family: var(--display); font-size: var(--s2); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em;
+}
+.intro { grid-column: 7 / -1; max-width: 36em; }
+.page-home .hero { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+
+/* ——— Home: every project as a tile ——— */
+.work { border-top: 1px solid var(--rule); padding-block: clamp(2.25rem, 4vw, 3.25rem) clamp(4rem, 8vw, 7rem); }
+.work-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem 1.5rem; flex-wrap: wrap;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+.work-head h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
+.work-head p { font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
+
+.tiles {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2.75rem, 5vw, 4.5rem) var(--gutter);
+}
+.tile, .tile:visited { display: grid; gap: 1.1rem; align-content: start; color: var(--ink); text-decoration: none; }
+.tile:focus-visible { outline: 2px solid var(--link); outline-offset: 8px; border-radius: 6px; }
+.tile-media { position: relative; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; background: var(--screen); }
+.tile-media img, .tile-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The preview fades in over the still once it is actually playing, and back out when it stops. */
+.tile-media video { opacity: 0; transition: opacity 0.3s ease; }
+.tile-media video.is-playing { opacity: 1; }
+.tile-media .panel-label { z-index: 1; }
+/* A faint edge, so light screenshots don't dissolve into the paper. */
+.tile-media::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(32 33 34 / 0.1); pointer-events: none; z-index: 2; }
+/* No footage yet: the same dashed note the project page uses, not a dark screen that looks broken. */
+.tile-media.is-empty { display: grid; place-items: center; background: transparent; border: 1px dashed var(--rule); }
+.tile-media.is-empty::after { content: none; }
+.tile-media.is-empty span { font-family: var(--display); font-size: var(--s0); font-weight: 500; color: var(--muted); }
+
+.tile-text { display: grid; gap: 0.5rem; }
+.tile-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem 1rem; flex-wrap: wrap; }
+.tile-title {
+  font-size: clamp(1.6rem, 1.15rem + 1.6vw, 2.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02;
+  color: var(--link);
+}
+.tile:visited .tile-title { color: var(--visited); }
+.tile:hover .tile-title, .tile:focus-visible .tile-title {
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.14em;
+}
+.tile-meta { font-family: var(--display); font-size: 0.9375rem; color: var(--muted); line-height: 1.45; }
+.tile-desc { color: var(--ink); font-size: 1.0625rem; line-height: 1.55; max-width: 34em; }
+.tile-facts { display: flex; flex-wrap: wrap; gap: 0.2rem 1.5rem; font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
+.tile-facts b { color: var(--ink); font-weight: 700; font-size: var(--s0); letter-spacing: -0.01em; }
+
+/* Status, encoded in the chip itself: ink fill = out in the world, white = being built, outline = not ready.
+   Blue stays reserved for things you can click. */
+.status {
+  font-family: var(--display); font-size: var(--s-1); font-weight: 600; line-height: 1.2; white-space: nowrap;
+  padding: 0.28rem 0.6rem; border-radius: 4px;
+}
+.status-live { background: var(--ink); color: #ffffff; }
+.status-dev { background: var(--panel); color: var(--ink); }
+.status-wip { color: var(--muted); box-shadow: inset 0 0 0 1px var(--rule); }
+
+/* ——— Project pages ——— */
+.project { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 6vw, 5.5rem); }
+.project:last-child { padding-bottom: clamp(4rem, 8vw, 7rem); }
+.page-project .project { border-top: 0; padding-top: clamp(2.5rem, 6vw, 5rem); }
+.project-head { row-gap: 1.5rem; margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+.project-title { grid-column: 1 / span 5; display: grid; gap: 0.75rem; align-content: start; }
+.project-title h1, .project-title h2 { font-size: var(--s3); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.page-project .project-title h1 { font-size: var(--s4); letter-spacing: -0.04em; line-height: 0.95; }
+.meta { font-family: var(--display); font-size: var(--s0); color: var(--muted); line-height: 1.45; }
+.project-copy { grid-column: 7 / -1; display: grid; gap: 1.5rem; align-content: start; max-width: 36em; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0; font-family: var(--display); }
+.stats div { display: grid; gap: 0.1rem; }
+.stats dt { order: 2; font-size: var(--s-1); color: var(--muted); }
+.stats dd { order: 1; margin: 0; font-size: var(--s2); font-weight: 700; letter-spacing: -0.02em; }
+
+.visit { font-family: var(--display); font-size: var(--s0); font-weight: 600; justify-self: start; }
+.visit-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+
+/* ——— Build stages, drawn as a path ——— */
+.stages {
+  list-style: none; margin: 0; padding: 0; position: relative;
+  display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); column-gap: clamp(12px, 1.6vw, 24px); row-gap: 1.25rem;
+}
+/* The track runs through every label; labels sit on top of it. */
+.stages::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0.95rem; height: 1px; background: var(--muted);
+}
+.stage { position: relative; display: grid; gap: 0.75rem; min-width: 0; align-content: start; }
+.stage-label {
+  justify-self: start; font-family: var(--display); font-size: var(--s0); font-weight: 600; line-height: 1.2;
+  padding: 0.35rem 0.75rem; border-radius: 4px; background: var(--panel); color: var(--ink); white-space: nowrap;
+}
+.stage:first-child .stage-label { background: var(--ink); color: var(--paper); }
+.stage:last-child:not(:first-child) .stage-label { background: var(--link); color: #ffffff; }
+
+.shot { background: var(--screen); border-radius: 4px; overflow: hidden; aspect-ratio: 16 / 9; }
+.shot img, .shot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+
+/* Vertical variant: a centred timeline on the page's 12-column grid.
+   Clips span columns 4-9 (the middle half), labels hang right-aligned in columns 1-3,
+   and the track runs down the gutter between them. Column 4 starts at 25% + gutter/4. */
+.stages.stages-vertical { grid-template-columns: minmax(0, 1fr); row-gap: clamp(1.5rem, 3vw, 2.5rem); padding-left: 0; }
+.stages.stages-vertical::before { left: calc(25% - var(--gutter) / 4); right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+.stages-vertical .stage { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 0.75rem; align-items: center; }
+.stages-vertical .stage-label { grid-column: 1 / span 3; justify-self: end; }
+.stages-vertical .shot { grid-column: 4 / span 6; }
+/* Each label sits at the vertical middle of its clip; the track runs from the first label's middle to the last's. */
+.stages-vertical .stage::before { content: ""; position: absolute; left: calc(25% - var(--gutter) * 0.75); top: 50%; width: calc(var(--gutter) / 2); height: 1px; background: var(--muted); }
+.stages-vertical .stage:first-child::after, .stages-vertical .stage:last-child::after { content: ""; position: absolute; left: calc(25% - var(--gutter) / 4 - 1px); width: 3px; background: var(--paper); }
+.stages-vertical .stage:first-child::after { top: -1px; bottom: calc(50% + 1px); }
+.stages-vertical .stage:last-child::after { top: calc(50% + 1px); bottom: -1px; }
+.stages-vertical + .caption { margin-left: calc(25% + var(--gutter) / 4); max-width: calc(50% - var(--gutter) / 2); }
+
+/* A project whose media isn't ready yet: a quiet, neutral note in place of the screens. */
+.wip {
+  display: grid; place-items: center; min-height: clamp(8rem, 14vw, 11rem);
+  border: 1px dashed var(--rule); border-radius: 4px;
+  font-family: var(--display); font-size: var(--s0); font-weight: 500; color: var(--muted);
+}
+
+.caption { font-family: var(--display); font-size: var(--s-1); color: var(--muted); margin-top: 0.9rem; max-width: 40em; }
+.footnote { font-family: var(--display); font-size: 0.75rem; line-height: 1.5; color: var(--muted); margin-top: 0.5rem; max-width: 48em; }
+
+/* ——— Gameplay panels: one moment from several screens ——— */
+.panels {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px); margin: 0;
+}
+.panel { position: relative; margin: 0; background: var(--screen); border-radius: 4px; overflow: hidden; min-height: 0; }
+.panel-main { grid-row: 1 / span 2; aspect-ratio: 16 / 9; }
+.panel img, .panel video { width: 100%; height: 100%; object-fit: cover; }
+.panel:not(.panel-main) { aspect-ratio: 16 / 9; }
+@media (min-width: 901px) {
+  /* Side panels take their height from the main panel, not their images. */
+  .panel:not(.panel-main) { aspect-ratio: auto; }
+  .panel:not(.panel-main) img, .panel:not(.panel-main) video { position: absolute; inset: 0; }
+}
+.panel-label {
+  position: absolute; left: 10px; top: 10px; font-family: var(--display); font-size: var(--s-1); font-weight: 600;
+  padding: 0.25rem 0.55rem; border-radius: 4px; background: rgb(15 16 19 / 0.78); color: #f1f2f4;
+}
+.panel-tall { grid-row: 1 / span 2; }
+.panel-tall picture { display: contents; }
+.panel-tall img { object-position: center top; }
+.panel-tall .panel-label { left: auto; right: 10px; }  /* the trip title sits top-left in this crop */
+
+.caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.panels.panels-solo { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }  /* one wide screen */
+.panels-solo .panel-main { grid-row: auto; }
+.panels.panels-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }  /* two equal screens */
+.panels-pair .panel-main { grid-row: auto; }
+.panels-solo .panel-ultrawide { aspect-ratio: 32 / 9; }  /* two 16:9 screens side by side */
+
+/* ——— Tactics: a race as a route table ——— */
+.tactics { margin-block: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem; }
+.tactics > h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
+.routes-scroll { overflow-x: auto; }
+.routes { width: 100%; min-width: 760px; border-collapse: collapse; font-family: var(--display); font-size: var(--s-1); }
+.routes-intro { font-family: var(--display); color: var(--muted); font-size: var(--s0); max-width: 46em; }
+.routes thead th { text-align: left; font-weight: 500; color: var(--muted); padding: 0 0.75rem 0.5rem 0; border-bottom: 1px solid var(--ink); }
+.routes tbody th { text-align: left; font-weight: 600; font-size: var(--s0); white-space: nowrap; padding-right: 1rem; }
+.routes td, .routes tbody th { padding-block: 0.7rem; border-bottom: 1px solid var(--rule); }
+.routes td { padding-right: 0.75rem; }
+.routes .fin { color: var(--muted); white-space: nowrap; }
+.routes tbody tr:first-child .fin { color: var(--ink); font-weight: 600; }
+.dot { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--c); margin-right: 0.5rem; vertical-align: 0.05em; }
+.hop {
+  display: inline-flex; align-items: baseline; gap: 0.45rem; white-space: nowrap;
+  padding: 0.3rem 0.6rem; border-radius: 4px; background: var(--panel); color: var(--ink); font-weight: 500;
+}
+.hop b { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--muted); }
+.hop.near { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--link); }
+.hop.near b { color: var(--link); }
+.hop.goal { background: var(--link); color: #ffffff; font-weight: 600; }
+.routes-key { font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
+.routes-key .hop { margin-right: 0.4rem; }
+
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem var(--gutter); margin-top: 1rem; }
+.notes > div { display: grid; gap: 0.4rem; align-content: start; padding-top: 0.9rem; border-top: 2px solid var(--ink); }
+.notes h3 { font-size: var(--s0); font-weight: 700; }
+.notes p { font-size: 1.0625rem; line-height: 1.55; }
+
+/* ——— How it's built: a spec sheet of engineering decisions ——— */
+.build { margin-bottom: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem; }
+.caption + .build, .footnote + .build { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.build > h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
+.build-list { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+.build-list > div { display: grid; gap: 0.35rem; align-content: start; padding-block: 1rem 1.25rem; border-top: 1px solid var(--rule); }
+.build-list dt { font-family: var(--display); font-size: var(--s0); font-weight: 700; line-height: 1.35; }
+.build-list dd { margin: 0; font-size: 1.0625rem; line-height: 1.55; }
+.build-list code, .notes code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--panel); padding: 0.05em 0.3em; border-radius: 3px; }
+
+/* ——— Previous / next project ——— */
+.pagenav { border-top: 1px solid var(--rule); padding-block: clamp(2rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem); font-family: var(--display); }
+.pagenav-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem var(--gutter); }
+.pagenav-link, .pagenav-link:visited { display: grid; gap: 0.35rem; align-content: start; text-decoration: none; color: var(--ink); }
+.pagenav-link.next { text-align: right; justify-items: end; }
+.pagenav-link span { font-size: var(--s-1); color: var(--muted); }
+.pagenav-link b { font-size: var(--s3); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; color: var(--link); }
+.pagenav-link:visited b { color: var(--visited); }
+.pagenav-link:hover b, .pagenav-link:focus-visible b { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.14em; }
+.pagenav-foot {
+  display: flex; justify-content: space-between; gap: 0.5rem 1.5rem; flex-wrap: wrap;
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem); font-size: var(--s-1); color: var(--muted);
+}
+.pagenav-foot a { font-weight: 600; }
+@media (hover: none) { .pagenav-foot span { display: none; } }  /* no arrow keys on a phone */
+kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding: 0.05rem 0.35rem; border-radius: 3px; background: var(--panel); box-shadow: inset 0 -1px 0 var(--rule); }
+
+/* ——— Narrow screens ——— */
+@media (max-width: 900px) {
+  .standfirst, .intro, .project-title, .project-copy { grid-column: 1 / -1; }
+  .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto; }
+  .stages-vertical .shot { grid-column: 4 / -1; }
+  .stages-vertical + .caption { max-width: none; }
+  .panel-main { grid-column: 1 / -1; grid-row: auto; }
+  .panel-tall { grid-column: 1 / -1; grid-row: auto; }
+  .panel-tall img { object-position: center; }
+  .notes { grid-template-columns: minmax(0, 1fr); }
+  .build-list { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  /* One line of project links that scrolls sideways, fading at the edge so it reads as "more this way". */
+  .topbar-inner { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0.4rem; }
+  .topbar nav {
+    flex-wrap: nowrap; overflow-x: auto; min-width: 0; gap: 1.25rem; padding-bottom: 0.55rem; margin-bottom: -0.45rem; scrollbar-width: none;
+    --fade-l: #000; --fade-r: transparent;
+    -webkit-mask-image: linear-gradient(to right, var(--fade-l), #000 2.5rem, #000 calc(100% - 2.5rem), var(--fade-r));
+    mask-image: linear-gradient(to right, var(--fade-l), #000 2.5rem, #000 calc(100% - 2.5rem), var(--fade-r));
+  }
+  .topbar nav::-webkit-scrollbar { display: none; }
+  .topbar nav[data-edge="end"] { --fade-l: transparent; --fade-r: #000; }
+  .topbar nav[data-edge="middle"] { --fade-l: transparent; --fade-r: transparent; }
+  .topbar nav[data-edge="none"] { --fade-l: #000; --fade-r: #000; }
+  .stages { grid-template-columns: minmax(0, 1fr); row-gap: 2rem; padding-left: 1.5rem; }
+  .stages::before { left: 0.3rem; right: auto; width: 1px; height: auto; bottom: 0; }
+  .stage::before { content: ""; position: absolute; left: -1.2rem; top: 0.95rem; width: 1rem; height: 1px; background: var(--muted); }
+  .stage:last-child::after { content: ""; position: absolute; left: -1.25rem; top: calc(0.95rem + 1px); bottom: -1px; width: 3px; background: var(--paper); }
+  .stats { gap: 1rem 1.75rem; }
+  .panels { grid-template-columns: minmax(0, 1fr); }
+  .stages-vertical .stage { grid-template-columns: minmax(0, 1fr); }
+  .stages-vertical .stage-label, .stages-vertical .shot { grid-column: 1; margin-left: 1.5rem; }
+  .stages-vertical .stage { align-items: start; }
+  .stages-vertical .stage-label { justify-self: start; }
+  .stages.stages-vertical::before { left: 0.3rem; top: 0.95rem; }
+  .stages-vertical .stage::before { left: 0.3rem; top: 0.95rem; width: 1.2rem; }
+  .stages-vertical .stage:first-child::after { display: none; }
+  .stages-vertical .stage:last-child::after { left: calc(0.3rem - 1px); top: calc(0.95rem + 1px); }
+  .stages-vertical + .caption { margin-left: 0; }
+  .pagenav-row { grid-template-columns: minmax(0, 1fr); }
+  .pagenav-link.next { text-align: left; justify-items: start; }
+}
+
+/* ——— Print, for portals that want a PDF: no navigation, no split screens ——— */
+@media print {
+  .topbar, .skip, .pagenav-foot kbd { display: none; }
+  body { background: #ffffff; }
+  .panel, .shot, .tile, .build-list > div, .notes > div { break-inside: avoid; }
+  .project-head, .tactics > h2, .build > h2 { break-after: avoid; }
+}

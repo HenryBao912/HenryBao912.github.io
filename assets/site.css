@@ -114,7 +114,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .tile-media.is-empty span { font-family: var(--display); font-size: var(--s0); font-weight: 500; color: var(--muted); }
 
 .tile-text { display: grid; gap: 0.5rem; }
-.tile-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem 1rem; flex-wrap: wrap; }
 .tile-title {
   font-size: clamp(1.6rem, 1.15rem + 1.6vw, 2.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02;
   color: var(--link);
@@ -125,18 +124,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 }
 .tile-meta { font-family: var(--display); font-size: 0.9375rem; color: var(--muted); line-height: 1.45; }
 .tile-desc { color: var(--ink); font-size: 1.0625rem; line-height: 1.55; max-width: 34em; }
-.tile-facts { display: flex; flex-wrap: wrap; gap: 0.2rem 1.5rem; font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
-.tile-facts b { color: var(--ink); font-weight: 700; font-size: var(--s0); letter-spacing: -0.01em; }
-
-/* Status, encoded in the chip itself: ink fill = out in the world, white = being built, outline = not ready.
-   Blue stays reserved for things you can click. */
-.status {
-  font-family: var(--display); font-size: var(--s-1); font-weight: 600; line-height: 1.2; white-space: nowrap;
-  padding: 0.28rem 0.6rem; border-radius: 4px;
-}
-.status-live { background: var(--ink); color: #ffffff; }
-.status-dev { background: var(--panel); color: var(--ink); }
-.status-wip { color: var(--muted); box-shadow: inset 0 0 0 1px var(--rule); }
 
 /* ——— Project pages ——— */
 .project { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 6vw, 5.5rem); }

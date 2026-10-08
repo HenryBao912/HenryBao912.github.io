@@ -106,12 +106,21 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .tile-media video { opacity: 0; transition: opacity 0.3s ease; }
 .tile-media video.is-playing { opacity: 1; }
 .tile-media .panel-label { z-index: 1; }
+/* A project without footage yet: a full-width row under the grid, title on the left and the
+   sentence on the right (the same split as a project page's header), instead of an empty box. */
+.tile-wide { grid-column: 1 / -1; }
+.tile-wide .tile-text {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 0.5rem;
+  padding-top: clamp(1.25rem, 2.5vw, 1.75rem); border-top: 1px solid var(--rule);
+}
+.tile-wide .tile-title { grid-column: 1 / span 5; grid-row: 1 / span 2; }
+.tile-wide .tile-desc, .tile-wide .tile-meta { grid-column: 7 / -1; }
+@media (max-width: 760px) {
+  .tile-wide .tile-title, .tile-wide .tile-desc, .tile-wide .tile-meta { grid-column: 1 / -1; grid-row: auto; }
+}
+
 /* A faint edge, so light screenshots don't dissolve into the paper. */
 .tile-media::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(32 33 34 / 0.1); pointer-events: none; z-index: 2; }
-/* No footage yet: the same dashed note the project page uses, not a dark screen that looks broken. */
-.tile-media.is-empty { display: grid; place-items: center; background: transparent; border: 1px dashed var(--rule); }
-.tile-media.is-empty::after { content: none; }
-.tile-media.is-empty span { font-family: var(--display); font-size: var(--s0); font-weight: 500; color: var(--muted); }
 
 .tile-text { display: grid; gap: 0.5rem; }
 .tile-title {
@@ -213,6 +222,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .panel-tall .panel-label { left: auto; right: 10px; }  /* the trip title sits top-left in this crop */
 
 .caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.panels + .panels { margin-top: clamp(8px, 1vw, 14px); }  /* two rows of one gallery, spaced like the panels within a row */
 .panels.panels-solo { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }  /* one wide screen */
 .panels-solo .panel-main { grid-row: auto; }
 .panels.panels-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }  /* two equal screens */
@@ -258,6 +268,33 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .build-list dd { margin: 0; font-size: 1.0625rem; line-height: 1.55; }
 .build-list code, .notes code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--panel); padding: 0.05em 0.3em; border-radius: 3px; }
 
+/* ——— Hutong After Rain: renderer switch, breakdown strip, credits ——— */
+.title-zh { font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", var(--display); font-size: var(--s2); font-weight: 500; letter-spacing: 0.3em; color: var(--muted); line-height: 1.2; }
+
+/* Two buttons that switch every still between the path tracer and Lumen. Hidden until the script runs. */
+.renderer {
+  display: flex; justify-content: flex-end; gap: 0.25rem; margin-bottom: 0.75rem;
+  font-family: var(--display); font-size: var(--s-1); font-weight: 600;
+}
+.renderer[hidden] { display: none; }
+.renderer button {
+  font: inherit; color: var(--muted); background: transparent; cursor: pointer;
+  border: 0; border-radius: 4px; padding: 0.4rem 0.7rem; box-shadow: inset 0 0 0 1px var(--rule);
+}
+.renderer button:hover { color: var(--ink); }
+.renderer button[aria-pressed="true"] { background: var(--ink); color: #ffffff; box-shadow: none; }
+
+.strip { margin: clamp(2.5rem, 5vw, 4rem) 0 0; }
+.strip-scroll { overflow-x: auto; border-radius: 4px; background: var(--screen); }
+.strip-scroll img { width: 100%; min-width: 760px; height: auto; }
+
+.credits { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1rem; }
+.credits > h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
+.credits-list { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); }
+.credits-list > div { display: grid; gap: 0.2rem; align-content: start; padding-block: 0.8rem 0.9rem; border-top: 1px solid var(--rule); }
+.credits-list dt { font-family: var(--display); font-size: var(--s-1); font-weight: 600; color: var(--muted); }
+.credits-list dd { margin: 0; font-family: var(--display); font-size: 0.9375rem; line-height: 1.5; }
+
 /* ——— Previous / next project ——— */
 .pagenav { border-top: 1px solid var(--rule); padding-block: clamp(2rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem); font-family: var(--display); }
 .pagenav-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem var(--gutter); }
@@ -286,6 +323,7 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .panel-tall img { object-position: center; }
   .notes { grid-template-columns: minmax(0, 1fr); }
   .build-list { grid-template-columns: minmax(0, 1fr); }
+  .credits-list { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 760px) {
   .tiles { grid-template-columns: minmax(0, 1fr); }

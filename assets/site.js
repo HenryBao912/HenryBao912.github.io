@@ -47,6 +47,21 @@
     }
   }
 
+  // Hutong After Rain: switch every still between the path tracer and Lumen. The labels change with
+  // the images, so a frame is never shown under the wrong renderer's name.
+  const renderer = document.querySelector('.renderer');
+  if (renderer) {
+    renderer.hidden = false;
+    renderer.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-renderer]');
+      if (!btn) return;
+      const mode = btn.dataset.renderer;
+      renderer.querySelectorAll('button[data-renderer]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      document.querySelectorAll('img[data-pt][data-rt]').forEach((img) => { img.src = img.dataset[mode]; });
+      document.querySelectorAll('.panel-label[data-pt][data-rt]').forEach((l) => { l.textContent = l.dataset[mode]; });
+    });
+  }
+
   // Phones: the project links scroll sideways. Start with the current one in view.
   const nav = document.querySelector('.topbar nav');
   if (nav) {

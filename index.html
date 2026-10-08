@@ -193,7 +193,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 /* ——— How it's built: a spec sheet of engineering decisions ——— */
 .build { margin-bottom: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem; }
 .caption + .build { margin-top: clamp(2.5rem, 5vw, 4rem); }
-.caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }  /* a second set of screens under the first caption */  /* no route table between them (Halfway Home) */
+.caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.panels.panels-solo { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }  /* one wide screen (the rover) */
+.panels-solo .panel-main { grid-row: auto; }
+.panels.panels-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }  /* two equal screens */
+.panels-pair .panel-main { grid-row: auto; }
+.panels-solo .panel-ultrawide { aspect-ratio: 32 / 9; }  /* two 16:9 screens side by side */  /* a second set of screens under the first caption */  /* no route table between them (Halfway Home) */
 .build h3 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
 .build-list { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
 .build-list > div { display: grid; gap: 0.35rem; align-content: start; padding-block: 1rem 1.25rem; border-top: 1px solid var(--rule); }
@@ -419,6 +424,36 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
         </figure>
       </div>
       <p class="caption">Three places in the current build. The Sky Arch is sited by its approach: the level tool searches the map for open ground with a clear 150 m path heading straight into the sun, so the arch first appears as a silhouette. The Deep Cut is a canyon whose walls put its floor in real shadow, lit from below by pulsing pools. At the Boneyard the predator comes out of the trees; its attacks are held off for this recording. All three are raw capture from the editor, with the long walks sped up.</p>
+
+      <!-- The rover -->
+      <div class="panels panels-next panels-solo">
+        <figure class="panel panel-main">
+          <video src="assets/hh-rover.mp4" poster="assets/hh-rover-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The rover: a tracking shot alongside the yellow two-seat buggy as it drives across orange dunes past the Boneyard, then a fixed shot as it drives out under the Sky Arch toward the camera and past it."></video>
+          <figcaption class="panel-label">Rover</figcaption>
+        </figure>
+      </div>
+      <p class="caption">The rover is a salvaged buggy built on its own physics: an 800 kg rigidbody on four raycast springs, all-wheel drive, no wheel colliders, and no automatic righting if you roll it. One player drives while the other works the winch. Cargo rides in the bed, where its weight sinks the suspension, or on a tow rope that drags, swings and can snap. The server runs the simulation and both screens follow it.</p>
+
+      <!-- Two players, one load -->
+      <div class="panels panels-next panels-pair">
+        <figure class="panel panel-main">
+          <video src="assets/hh-haul.mp4?v=2" poster="assets/hh-haul-poster.jpg?v=2" muted loop playsinline autoplay preload="metadata" aria-label="Two astronauts grip a ship part with ropes and drag it across the sand together, past the hull and a giant engine pipe of a crashed freighter."></video>
+          <figcaption class="panel-label">Co-op haul</figcaption>
+        </figure>
+        <figure class="panel panel-main">
+          <video src="assets/hh-tow.mp4" poster="assets/hh-tow-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The rover drives across the dunes towing a ship part on a dark cable. The cable pays out to full length, then reels back in until the part is right behind the rover, flashing red as it takes the strain."></video>
+          <figcaption class="panel-label">Tow and winch</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Hauling together. Each grip is a physics rope from a player's hand to the part, and the server simulates the load, so it drags and swings behind whoever is pulling. On the rover the driver tows while the passenger works the winch: here the cable pays out to its full 10 m and is reeled back in, turning red as it takes the strain. In both clips the second player is a separate copy of the game connected over the network.</p>
+
+      <div class="panels panels-next panels-solo">
+        <figure class="panel panel-main panel-ultrawide">
+          <video src="assets/hh-screens.mp4" poster="assets/hh-screens-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Two first-person screens side by side. On the left, the host holds a power core on a rope as their partner walks up and grabs it; on the right, the partner sees the host holding the same core. Then both pull it across the sand, each seeing the other on their own screen."></video>
+          <figcaption class="panel-label">Both screens</figcaption>
+        </figure>
+      </div>
+      <p class="caption">Both screens at the same moment. Left is the host, right is the second player, each running their own copy of the game. Physics runs on the host and the other machine draws what it is sent, so both players see the same core, on the same ropes, in the same place. Each machine stamped its frames with the clock time, and the two recordings were lined up afterwards.</p>
 
       <!-- Building, the map, and the way out -->
       <div class="panels panels-next">

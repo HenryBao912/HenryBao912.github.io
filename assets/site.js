@@ -114,19 +114,21 @@
     }
   }
 
-  // Hutong After Rain: switch every still between the path tracer and Lumen. The labels change with
-  // the images, so a frame is never shown under the wrong renderer's name.
+  // Hutong After Rain: switch every still between the path tracer and Lumen, from the buttons above
+  // the stills or from the same switch on an enlarged photo in the viewer; both stay in step.
   const renderer = document.querySelector('.renderer');
+  let rendererMode = 'pt';
+  const setRenderer = (mode) => {
+    rendererMode = mode;
+    if (renderer) renderer.querySelectorAll('button[data-renderer]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.renderer === mode)));
+    document.querySelectorAll('img[data-pt][data-rt]').forEach((img) => { img.src = img.dataset[mode]; });
+    document.dispatchEvent(new CustomEvent('renderer-change', { detail: mode }));
+  };
   if (renderer) {
     renderer.hidden = false;
     renderer.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-renderer]');
-      if (!btn) return;
-      const mode = btn.dataset.renderer;
-      renderer.querySelectorAll('button[data-renderer]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-      document.querySelectorAll('img[data-pt][data-rt]').forEach((img) => { img.src = img.dataset[mode]; });
-      document.querySelectorAll('.panel-label[data-pt][data-rt]').forEach((l) => { l.textContent = l.dataset[mode]; });
-      document.dispatchEvent(new CustomEvent('renderer-change'));
+      if (btn) setRenderer(btn.dataset.renderer);
     });
   }
 
@@ -152,6 +154,7 @@
         el.setAttribute('aria-label', name ? `View larger: ${name}` : 'View larger');
       });
       const fullSrc = (img) => {
+        if (img.dataset.pt && img.dataset.rt) return img.dataset[rendererMode].replace('assets/', 'assets/full/');
         const src = img.currentSrc || img.src;
         return img.hasAttribute('data-full') ? src.replace('/assets/', '/assets/full/') : src;
       };
@@ -160,6 +163,9 @@
       box.className = 'lightbox';
       box.setAttribute('aria-label', 'Enlarged view');
       box.innerHTML = '<div class="lightbox-stage"></div>'
+        + '<div class="lightbox-switch" role="group" aria-label="Renderer" hidden>'
+        + '<button type="button" data-mode="pt" aria-pressed="true">Path traced</button>'
+        + '<button type="button" data-mode="rt" aria-pressed="false">Real time</button></div>'
         + '<div class="lightbox-bar"><p class="lightbox-caption"></p><div class="lightbox-controls">'
         + '<button type="button" data-go="-1">Previous</button><span class="lightbox-count"></span>'
         + '<button type="button" data-go="1">Next</button><button type="button" data-close>Close</button>'
@@ -168,6 +174,31 @@
       const stage = box.querySelector('.lightbox-stage');
       const caption = box.querySelector('.lightbox-caption');
       const count = box.querySelector('.lightbox-count');
+      const switcher = box.querySelector('.lightbox-switch');
+      // Keep the switch on the top-right corner of the part of the photo that is in view.
+      const placeSwitch = () => {
+        if (switcher.hidden) return;
+        const img = stage.querySelector('img');
+        if (!img || !img.naturalWidth) { switcher.style.visibility = 'hidden'; return; }
+        const r = img.getBoundingClientRect();
+        const v = stage.getBoundingClientRect();
+        switcher.style.visibility = '';
+        const inset = innerWidth < 640 ? 8 : 12;
+        switcher.style.top = `${Math.max(r.top, v.top) + inset}px`;
+        switcher.style.left = `${Math.min(r.right, v.right) - inset - switcher.offsetWidth}px`;
+      };
+      const pressSwitch = () => switcher.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === rendererMode)));
+      switcher.addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-mode]');
+        if (!b || b.dataset.mode === rendererMode) return;
+        setRenderer(b.dataset.mode);
+        const media = items[index].querySelector('img');
+        const img = stage.querySelector('img');
+        if (media && img) { img.alt = media.alt; img.src = fullSrc(media); }
+      });
+      document.addEventListener('renderer-change', pressSwitch);
+      addEventListener('resize', () => { if (box.open) placeSwitch(); });
+      stage.addEventListener('scroll', placeSwitch, { passive: true });
       let index = 0;
       let opener = null;
       let swiped = false;
@@ -181,7 +212,10 @@
           requestAnimationFrame(() => {
             stage.scrollLeft = fx * stage.scrollWidth - stage.clientWidth / 2;
             stage.scrollTop = fy * stage.scrollHeight - stage.clientHeight / 2;
+            placeSwitch();
           });
+        } else {
+          requestAnimationFrame(placeSwitch);
         }
       };
 
@@ -198,6 +232,7 @@
         const loaded = () => { if (token === loadToken) stage.classList.remove('is-loading'); };
         stage.classList.add('is-loading');
         if (media.tagName === 'VIDEO') {
+          switcher.hidden = true;
           const v = document.createElement('video');
           v.src = media.currentSrc || media.src;
           v.poster = media.poster;
@@ -216,6 +251,7 @@
           img.addEventListener('load', () => {
             loaded();
             img.classList.toggle('can-zoom', img.naturalWidth > stage.clientWidth || img.naturalHeight > stage.clientHeight);
+            placeSwitch();
           });
           img.addEventListener('click', (e) => {
             if (!img.classList.contains('can-zoom')) return;
@@ -224,6 +260,15 @@
           });
           img.src = fullSrc(media);
           stage.appendChild(img);
+          // A still that exists in both renderers gets the switch, and the other version is fetched
+          // now so switching is instant.
+          const dual = Boolean(media.dataset.pt && media.dataset.rt);
+          switcher.hidden = !dual;
+          if (dual) {
+            pressSwitch();
+            switcher.style.visibility = 'hidden';
+            new Image().src = media.dataset[rendererMode === 'pt' ? 'rt' : 'pt'].replace('assets/', 'assets/full/');
+          }
         }
         caption.textContent = labelFor(el);
         count.textContent = `${index + 1} / ${items.length}`;
@@ -255,7 +300,8 @@
         if (swiped) { swiped = false; return; }
         const go = e.target.closest('[data-go]');
         if (go) { show(index + Number(go.dataset.go)); return; }
-        if (e.target.closest('[data-close]') || e.target === stage) box.close();
+        // Anything but the photo or clip itself and the controls closes the viewer.
+        if (e.target.closest('[data-close]') || !e.target.closest('img, video, button, .lightbox-switch')) box.close();
       });
       // While the viewer is open, the arrow keys page through images instead of changing project.
       box.addEventListener('keydown', (e) => {

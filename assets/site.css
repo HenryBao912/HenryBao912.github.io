@@ -221,8 +221,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
   padding: 0.25rem 0.55rem; border-radius: 4px; background: rgb(15 16 19 / 0.78); color: #f1f2f4;
 }
 .panel-tall { grid-row: 1 / span 2; }
-.panel-tall picture { display: contents; }
-.panel-tall img { object-position: center top; }
 .panel-label.is-right { left: auto; right: 10px; }  /* where the screenshot's own title sits top-left */
 
 .caption + .panels-next { margin-top: clamp(2.5rem, 5vw, 4rem); }
@@ -423,6 +421,20 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
 }
 .lightbox-controls button:hover { background: rgb(255 255 255 / 0.1); }
 .lightbox-controls button:focus-visible { outline: 2px solid #8cacff; outline-offset: 2px; }
+/* Path traced / real time, on the enlarged photo's top-right corner (placed by the script). */
+.lightbox-switch {
+  position: fixed; z-index: 2; display: flex; gap: 2px; padding: 3px; border-radius: 6px;
+  background: rgb(15 16 19 / 0.78); font-family: var(--display); font-size: var(--s-1); font-weight: 600;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.lightbox-switch[hidden] { display: none; }
+.lightbox-switch button {
+  font: inherit; color: rgb(241 242 244 / 0.75); background: transparent; cursor: pointer;
+  border: 0; border-radius: 4px; padding: 0.4rem 0.65rem; white-space: nowrap;
+}
+.lightbox-switch button:hover { color: #ffffff; }
+.lightbox-switch button[aria-pressed="true"] { background: #f1f2f4; color: var(--ink); }
+.lightbox-switch button:focus-visible { outline: 2px solid #8cacff; outline-offset: 1px; }
 .lightbox-count { min-width: 4.5em; text-align: center; color: rgb(241 242 244 / 0.6); font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .zoom-hint { transition: none; } }
 
@@ -481,7 +493,7 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .stages-vertical + .caption { max-width: none; }
   .panel-main { grid-column: 1 / -1; grid-row: auto; }
   .panel-tall { grid-column: 1 / -1; grid-row: auto; }
-  .panel-tall img { object-position: center; }
+  .panel.panel-portrait { aspect-ratio: 8 / 9; justify-self: center; width: min(100%, 440px); }
   .notes { grid-template-columns: minmax(0, 1fr); }
   .build-list { grid-template-columns: minmax(0, 1fr); }
   .credits-list { grid-template-columns: minmax(0, 1fr); }
@@ -516,6 +528,8 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .panel-label { left: 8px; top: 8px; font-size: 0.6875rem; padding: 0.2rem 0.45rem; }
   .panel-label.is-right { left: auto; right: 8px; }
   .zoom-hint { right: 8px; bottom: 8px; }
+  .lightbox-switch { font-size: 0.6875rem; padding: 2px; }
+  .lightbox-switch button { padding: 0.3rem 0.5rem; }
   .stages-vertical .stage { grid-template-columns: minmax(0, 1fr); }
   .stages-vertical .stage-label, .stages-vertical .shot { grid-column: 1; margin-left: 1.5rem; }
   .stages-vertical .stage { align-items: start; }

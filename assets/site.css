@@ -268,7 +268,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .build-list dd { margin: 0; font-size: 1.0625rem; line-height: 1.55; }
 .build-list code, .notes code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--panel); padding: 0.05em 0.3em; border-radius: 3px; }
 
-/* ——— Hutong After Rain: renderer switch, breakdown strip, credits ——— */
+/* ——— Hutong After Rain: renderer switch and credits ——— */
 .title-zh { font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", var(--display); font-size: var(--s2); font-weight: 500; letter-spacing: 0.3em; color: var(--muted); line-height: 1.2; }
 
 /* Two buttons that switch every still between the path tracer and Lumen. Hidden until the script runs. */
@@ -284,9 +284,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .renderer button:hover { color: var(--ink); }
 .renderer button[aria-pressed="true"] { background: var(--ink); color: #ffffff; box-shadow: none; }
 
-.strip { margin: clamp(2.5rem, 5vw, 4rem) 0 0; }
-.strip-scroll { overflow-x: auto; border-radius: 4px; background: var(--screen); }
-.strip-scroll img { width: 100%; min-width: 760px; height: auto; }
 
 .credits { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1rem; }
 .credits > h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
@@ -312,6 +309,110 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 @media (hover: none) { .pagenav-foot span { display: none; } }  /* no arrow keys on a phone */
 kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding: 0.05rem 0.35rem; border-radius: 3px; background: var(--panel); box-shadow: inset 0 -1px 0 var(--rule); }
 
+/* ——— Slideshow: one large frame at a time, advancing on its own ——— */
+.carousel-row { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.carousel { grid-column: 2 / span 10; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; min-width: 0; --interval: 3s; }
+.carousel .caption { margin-top: 0; }
+.carousel-head { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem 1.5rem; min-width: 0; }
+.carousel-tabs {
+  list-style: none; margin: 0; padding: 0; min-width: 0;
+  display: flex; align-items: center; overflow-x: auto; scrollbar-width: none;
+}
+.carousel-tabs::-webkit-scrollbar { display: none; }
+.carousel-tabs li { display: flex; align-items: center; flex: none; }
+/* The same pills-on-a-track as the other build histories, so the sequence reads the same way. */
+.carousel-tabs li + li::before { content: ""; width: clamp(0.75rem, 2vw, 1.75rem); height: 1px; background: var(--muted); }
+.carousel-tabs button {
+  position: relative; overflow: hidden; cursor: pointer; white-space: nowrap;
+  font-family: var(--display); font-size: var(--s0); font-weight: 600; line-height: 1.2;
+  padding: 0.35rem 0.75rem; border: 0; border-radius: 4px; background: var(--panel); color: var(--ink);
+}
+.carousel-tabs button:hover { box-shadow: inset 0 0 0 1px var(--rule); }
+.carousel-tabs button[aria-current="true"] { background: var(--ink); color: #ffffff; box-shadow: none; }
+/* The active label doubles as the timer: a line fills along its foot, and when it is full the
+   slideshow moves on. Pausing the animation pauses the slideshow, with no clock to drift. */
+.carousel-tabs button[aria-current="true"]::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgb(255 255 255 / 0.85);
+  transform-origin: left; animation: carousel-progress var(--interval) linear forwards;
+}
+.carousel:is(.is-paused, .is-hovered, .is-focused, .is-viewing, .is-offscreen) .carousel-tabs button[aria-current="true"]::after {
+  animation-play-state: paused;
+}
+@keyframes carousel-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.carousel-pause {
+  flex: none; cursor: pointer; font-family: var(--display); font-size: var(--s-1); font-weight: 600; color: var(--muted);
+  background: transparent; border: 0; border-radius: 4px; padding: 0.4rem 0.7rem; box-shadow: inset 0 0 0 1px var(--rule);
+}
+.carousel-pause:hover { color: var(--ink); }
+/* Reduced motion: nothing moves on its own, so there is no timer and nothing to pause. */
+.carousel.is-static .carousel-tabs button[aria-current="true"]::after, .carousel.is-static .carousel-pause { display: none; }
+
+.carousel-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; background: var(--screen); touch-action: pan-y; }
+.carousel-slide { position: absolute; inset: 0; margin: 0; opacity: 0; visibility: hidden; transition: opacity 0.45s ease, visibility 0s linear 0.45s; }
+.carousel-slide.is-active { z-index: 1; opacity: 1; visibility: visible; transition: opacity 0.45s ease; }
+.carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+.carousel-slide.zoomable:focus-visible { outline-offset: -3px; }
+.carousel-step {
+  position: absolute; top: 50%; z-index: 4; transform: translateY(-50%); cursor: pointer;
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: 0;
+  border: 0; border-radius: 4px; background: rgb(15 16 19 / 0.72); color: #f1f2f4;
+  opacity: 0; transition: opacity 0.18s ease;
+}
+.carousel-step svg { width: 1rem; height: 1rem; }
+.carousel-step.prev { left: 10px; }
+.carousel-step.next { right: 10px; }
+.carousel-frame:hover .carousel-step, .carousel-step:focus-visible { opacity: 1; }
+@media (hover: none) { .carousel-step { opacity: 0.85; } }
+@media (prefers-reduced-motion: reduce) { .carousel-slide, .carousel-slide.is-active { transition: none; } }
+
+/* ——— Viewer: any image or clip on a project page opens larger ——— */
+.shot { position: relative; }
+.zoomable { cursor: zoom-in; }
+.zoomable:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+/* The prompt: a small label in the corner that appears on hover or keyboard focus. */
+.zoom-hint {
+  position: absolute; right: 10px; bottom: 10px; z-index: 3; pointer-events: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--display); font-size: var(--s-1); font-weight: 600; line-height: 1;
+  padding: 0.4rem 0.55rem; border-radius: 4px; background: rgb(15 16 19 / 0.8); color: #f1f2f4;
+  opacity: 0; transform: translateY(4px); transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.zoom-hint svg { width: 0.85rem; height: 0.85rem; flex: none; }
+.zoomable:hover .zoom-hint, .zoomable:focus-visible .zoom-hint { opacity: 1; transform: none; }
+/* No hover on touch screens: keep a quiet icon visible instead, so a tap is the obvious move. */
+@media (hover: none) {
+  .zoom-hint { opacity: 0.85; transform: none; padding: 0.4rem; }
+  .zoom-hint span { display: none; }
+}
+
+.lightbox {
+  padding: 0; border: 0; margin: 0; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none;
+  background: rgb(12 13 15 / 0.97); color: #f1f2f4; overflow: hidden;
+}
+.lightbox[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.lightbox::backdrop { background: rgb(12 13 15 / 0.97); }
+.lightbox-stage { display: grid; place-items: center; min-height: 0; overflow: auto; padding: clamp(12px, 3vw, 40px); }
+.lightbox-stage img, .lightbox-stage video { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 2px; }
+.lightbox-stage img.can-zoom { cursor: zoom-in; }
+/* Actual pixels: the stage scrolls to pan around the full-resolution frame. */
+.lightbox.is-zoomed .lightbox-stage { place-items: start; }
+.lightbox.is-zoomed .lightbox-stage img { max-width: none; max-height: none; cursor: zoom-out; }
+.lightbox-bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.75rem 1.5rem; flex-wrap: wrap;
+  padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgb(255 255 255 / 0.1); font-family: var(--display); font-size: var(--s-1);
+}
+.lightbox-caption { font-weight: 600; max-width: 60em; }
+.lightbox-controls { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.lightbox-controls button {
+  font: inherit; font-weight: 600; color: #f1f2f4; background: transparent; cursor: pointer;
+  border: 0; border-radius: 4px; padding: 0.45rem 0.75rem; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
+}
+.lightbox-controls button:hover { background: rgb(255 255 255 / 0.1); }
+.lightbox-controls button:focus-visible { outline: 2px solid #8cacff; outline-offset: 2px; }
+.lightbox-count { min-width: 4.5em; text-align: center; color: rgb(241 242 244 / 0.6); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .zoom-hint { transition: none; } }
+
 /* ——— Narrow screens ——— */
 @media (max-width: 900px) {
   .standfirst, .intro, .project-title, .project-copy { grid-column: 1 / -1; }
@@ -324,6 +425,7 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .notes { grid-template-columns: minmax(0, 1fr); }
   .build-list { grid-template-columns: minmax(0, 1fr); }
   .credits-list { grid-template-columns: minmax(0, 1fr); }
+  .carousel { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
   .tiles { grid-template-columns: minmax(0, 1fr); }
@@ -333,14 +435,17 @@ kbd { font-family: var(--display); font-size: 0.75rem; font-weight: 600; padding
   .topbar-inner { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0.4rem; }
   .topbar nav {
     flex-wrap: nowrap; overflow-x: auto; min-width: 0; gap: 1.25rem; padding-bottom: 0.55rem; margin-bottom: -0.45rem; scrollbar-width: none;
+  }
+  .topbar nav::-webkit-scrollbar { display: none; }
+  /* Rows that scroll sideways (project links, slideshow labels) fade only the edge that hides more. */
+  .topbar nav, .carousel-tabs {
     --fade-l: #000; --fade-r: transparent;
     -webkit-mask-image: linear-gradient(to right, var(--fade-l), #000 2.5rem, #000 calc(100% - 2.5rem), var(--fade-r));
     mask-image: linear-gradient(to right, var(--fade-l), #000 2.5rem, #000 calc(100% - 2.5rem), var(--fade-r));
   }
-  .topbar nav::-webkit-scrollbar { display: none; }
-  .topbar nav[data-edge="end"] { --fade-l: transparent; --fade-r: #000; }
-  .topbar nav[data-edge="middle"] { --fade-l: transparent; --fade-r: transparent; }
-  .topbar nav[data-edge="none"] { --fade-l: #000; --fade-r: #000; }
+  :is(.topbar nav, .carousel-tabs)[data-edge="end"] { --fade-l: transparent; --fade-r: #000; }
+  :is(.topbar nav, .carousel-tabs)[data-edge="middle"] { --fade-l: transparent; --fade-r: transparent; }
+  :is(.topbar nav, .carousel-tabs)[data-edge="none"] { --fade-l: #000; --fade-r: #000; }
   .stages { grid-template-columns: minmax(0, 1fr); row-gap: 2rem; padding-left: 1.5rem; }
   .stages::before { left: 0.3rem; right: auto; width: 1px; height: auto; bottom: 0; }
   .stage::before { content: ""; position: absolute; left: -1.2rem; top: 0.95rem; width: 1rem; height: 1px; background: var(--muted); }

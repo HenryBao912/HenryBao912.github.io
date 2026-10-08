@@ -1,6 +1,14 @@
 (() => {
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Rows that scroll sideways on a phone fade only the edge (or edges) that hide more:
+  // start, middle, end, or none if everything fits.
+  const markEdges = (row) => {
+    const atStart = row.scrollLeft <= 2;
+    const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+    row.dataset.edge = atStart && atEnd ? 'none' : atStart ? 'start' : atEnd ? 'end' : 'middle';
+  };
+
   // Project pages: clips play only while on screen, and not at all for people who ask for reduced motion.
   const clips = document.querySelectorAll('video[autoplay]');
   clips.forEach((v) => {
@@ -59,19 +67,240 @@
       renderer.querySelectorAll('button[data-renderer]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
       document.querySelectorAll('img[data-pt][data-rt]').forEach((img) => { img.src = img.dataset[mode]; });
       document.querySelectorAll('.panel-label[data-pt][data-rt]').forEach((l) => { l.textContent = l.dataset[mode]; });
+      document.dispatchEvent(new CustomEvent('renderer-change'));
     });
   }
+
+  // Project pages: every image and clip opens larger in a viewer. Images that have a full-resolution
+  // copy (assets/full/, same file name) load that; the rest open at their own size.
+  if (document.body.classList.contains('page-project')) {
+    const items = [...document.querySelectorAll('.panel, .shot, .carousel-slide')].filter((el) => el.querySelector('img, video'));
+    if (items.length) {
+      const icon = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4v4M6 14H2v-4M14 2 9.5 6.5M2 14l4.5-4.5"/></svg>';
+      const labelFor = (el) => {
+        if (el.dataset.label) return el.dataset.label;
+        const own = el.querySelector('.panel-label');
+        if (own) return own.textContent.trim();
+        const stage = el.closest('.stage');
+        if (stage) return (stage.querySelector('.stage-label')?.textContent || '').trim();
+        const cap = el.closest('figure')?.querySelector('figcaption');
+        if (cap) return cap.textContent.trim();
+        const m = el.querySelector('img, video');
+        return m.getAttribute('alt') || m.getAttribute('aria-label') || '';
+      };
+      const nameItems = () => items.forEach((el) => {
+        const name = labelFor(el);
+        el.setAttribute('aria-label', name ? `View larger: ${name}` : 'View larger');
+      });
+      const fullSrc = (img) => {
+        const src = img.currentSrc || img.src;
+        return img.hasAttribute('data-full') ? src.replace('/assets/', '/assets/full/') : src;
+      };
+
+      const box = document.createElement('dialog');
+      box.className = 'lightbox';
+      box.setAttribute('aria-label', 'Enlarged view');
+      box.innerHTML = '<div class="lightbox-stage"></div>'
+        + '<div class="lightbox-bar"><p class="lightbox-caption"></p><div class="lightbox-controls">'
+        + '<button type="button" data-go="-1">Previous</button><span class="lightbox-count"></span>'
+        + '<button type="button" data-go="1">Next</button><button type="button" data-close>Close</button>'
+        + '</div></div>';
+      document.body.appendChild(box);
+      const stage = box.querySelector('.lightbox-stage');
+      const caption = box.querySelector('.lightbox-caption');
+      const count = box.querySelector('.lightbox-count');
+      let index = 0;
+      let opener = null;
+      let swiped = false;
+
+      // Click a large image to see it at actual pixels, centred on the point you clicked.
+      const zoom = (e, img) => {
+        const r = img.getBoundingClientRect();
+        const fx = (e.clientX - r.left) / r.width;
+        const fy = (e.clientY - r.top) / r.height;
+        if (box.classList.toggle('is-zoomed')) {
+          requestAnimationFrame(() => {
+            stage.scrollLeft = fx * stage.scrollWidth - stage.clientWidth / 2;
+            stage.scrollTop = fy * stage.scrollHeight - stage.clientHeight / 2;
+          });
+        }
+      };
+
+      const show = (i) => {
+        index = (i + items.length) % items.length;
+        const el = items[index];
+        const media = el.querySelector('video') || el.querySelector('img');
+        box.classList.remove('is-zoomed');
+        stage.replaceChildren();
+        if (media.tagName === 'VIDEO') {
+          const v = document.createElement('video');
+          v.src = media.currentSrc || media.src;
+          v.poster = media.poster;
+          v.controls = true; v.muted = true; v.loop = true; v.playsInline = true;
+          v.setAttribute('aria-label', media.getAttribute('aria-label') || '');
+          v.addEventListener('loadedmetadata', () => { v.currentTime = media.currentTime || 0; }, { once: true });
+          stage.appendChild(v);
+          if (!still) v.play().catch(() => {});
+        } else {
+          const img = new Image();
+          const fallback = media.currentSrc || media.src;
+          img.alt = media.alt;
+          img.addEventListener('error', () => { if (img.src !== fallback) img.src = fallback; });
+          img.addEventListener('load', () => {
+            img.classList.toggle('can-zoom', img.naturalWidth > stage.clientWidth || img.naturalHeight > stage.clientHeight);
+          });
+          img.addEventListener('click', (e) => {
+            if (!img.classList.contains('can-zoom')) return;
+            e.stopPropagation();
+            zoom(e, img);
+          });
+          img.src = fullSrc(media);
+          stage.appendChild(img);
+        }
+        caption.textContent = labelFor(el);
+        count.textContent = `${index + 1} / ${items.length}`;
+        // Fetch the neighbouring images now, so paging through them feels instant.
+        [index - 1, index + 1].forEach((j) => {
+          const n = items[(j + items.length) % items.length];
+          const im = n.querySelector('video') ? null : n.querySelector('img');
+          if (im) new Image().src = fullSrc(im);
+        });
+      };
+
+      const open = (i) => {
+        opener = document.activeElement;
+        show(i);
+        box.showModal();
+        document.documentElement.style.overflow = 'hidden';
+        document.dispatchEvent(new CustomEvent('viewer-open'));
+        box.querySelector('[data-close]').focus();
+      };
+
+      box.addEventListener('close', () => {
+        stage.replaceChildren();  // also stops a playing clip
+        document.documentElement.style.overflow = '';
+        document.dispatchEvent(new CustomEvent('viewer-close'));
+        if (opener && opener.focus) opener.focus();
+      });
+      box.addEventListener('click', (e) => {
+        if (swiped) { swiped = false; return; }
+        const go = e.target.closest('[data-go]');
+        if (go) { show(index + Number(go.dataset.go)); return; }
+        if (e.target.closest('[data-close]') || e.target === stage) box.close();
+      });
+      // While the viewer is open, the arrow keys page through images instead of changing project.
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          show(index + (e.key === 'ArrowRight' ? 1 : -1));
+        }
+      });
+      // A sideways swipe on a touch screen pages too.
+      let startX = null;
+      stage.addEventListener('pointerdown', (e) => {
+        startX = e.pointerType !== 'mouse' && !box.classList.contains('is-zoomed') ? e.clientX : null;
+      });
+      stage.addEventListener('pointerup', (e) => {
+        if (startX === null) return;
+        const dx = e.clientX - startX;
+        startX = null;
+        if (Math.abs(dx) > 50) { swiped = true; show(index + (dx < 0 ? 1 : -1)); }
+      });
+
+      items.forEach((el, i) => {
+        el.classList.add('zoomable');
+        el.tabIndex = 0;
+        el.setAttribute('role', 'button');
+        el.insertAdjacentHTML('beforeend', `<span class="zoom-hint">${icon}<span>View larger</span></span>`);
+        el.addEventListener('click', () => open(i));
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+        });
+      });
+      nameItems();
+      document.addEventListener('renderer-change', nameItems);
+    }
+  }
+
+  // Slideshows: one large frame at a time. The active label's progress line is the timer; when it
+  // fills, the next frame shows. It pauses while the pointer is over it, while it has keyboard focus,
+  // while it is off screen, while the viewer is open, or when someone presses Pause.
+  document.querySelectorAll('.carousel').forEach((car) => {
+    const slides = [...car.querySelectorAll('.carousel-slide')];
+    const tabs = [...car.querySelectorAll('.carousel-tabs button')];
+    const pause = car.querySelector('.carousel-pause');
+    let current = 0;
+    const go = (i) => {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((sl, j) => {
+        sl.classList.toggle('is-active', j === current);
+        sl.setAttribute('aria-hidden', String(j !== current));
+      });
+      tabs.forEach((t, j) => t.setAttribute('aria-current', String(j === current)));
+      // Keep the chosen label in view when the row scrolls on a narrow screen.
+      const t = tabs[current], row = t.closest('.carousel-tabs');
+      if (row.scrollWidth > row.clientWidth) row.scrollLeft = t.parentElement.offsetLeft - (row.clientWidth - t.parentElement.offsetWidth) / 2;
+      markEdges(row);
+    };
+    const tabRow = car.querySelector('.carousel-tabs');
+    tabRow.addEventListener('scroll', () => markEdges(tabRow), { passive: true });
+    tabs.forEach((t, j) => t.addEventListener('click', () => go(j)));
+    car.querySelector('.carousel-step.prev').addEventListener('click', () => go(current - 1));
+    car.querySelector('.carousel-step.next').addEventListener('click', () => go(current + 1));
+    car.querySelector('.carousel-tabs').addEventListener('animationend', (e) => {
+      if (e.animationName === 'carousel-progress') go(current + 1);
+    });
+
+    if (still) car.classList.add('is-static');
+    pause.addEventListener('click', () => {
+      const paused = car.classList.toggle('is-paused');
+      pause.textContent = paused ? 'Play' : 'Pause';
+      pause.setAttribute('aria-pressed', String(paused));
+    });
+    if (matchMedia('(hover: hover)').matches) {
+      car.addEventListener('pointerenter', () => car.classList.add('is-hovered'));
+      car.addEventListener('pointerleave', () => car.classList.remove('is-hovered'));
+    }
+    car.addEventListener('focusin', (e) => { if (e.target.matches(':focus-visible')) car.classList.add('is-focused'); });
+    car.addEventListener('focusout', (e) => { if (!car.contains(e.relatedTarget)) car.classList.remove('is-focused'); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([en]) => car.classList.toggle('is-offscreen', !en.isIntersecting), { threshold: 0.35 }).observe(car);
+    }
+    document.addEventListener('viewer-open', () => car.classList.add('is-viewing'));
+    document.addEventListener('viewer-close', () => car.classList.remove('is-viewing'));
+
+    // Arrow keys move through the frames while focus is inside the slideshow (not between projects).
+    car.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        go(current + (e.key === 'ArrowRight' ? 1 : -1));
+      }
+    });
+    // A sideways swipe moves too; a swipe is not a tap, so it doesn't open the viewer.
+    const frame = car.querySelector('.carousel-frame');
+    let startX = null;
+    frame.addEventListener('pointerdown', (e) => { startX = e.clientX; });
+    frame.addEventListener('pointerup', (e) => {
+      if (startX === null) return;
+      const dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 40) {
+        go(current + (dx < 0 ? 1 : -1));
+        // Swallow the click a mouse drag produces, but only right after it: touch swipes don't
+        // always produce one, and the next real tap must still open the viewer.
+        const swallow = (c) => c.stopPropagation();
+        frame.addEventListener('click', swallow, { capture: true, once: true });
+        setTimeout(() => frame.removeEventListener('click', swallow, { capture: true }), 350);
+      }
+    });
+    go(0);
+  });
 
   // Phones: the project links scroll sideways. Start with the current one in view.
   const nav = document.querySelector('.topbar nav');
   if (nav) {
     const current = nav.querySelector('[aria-current="page"]');
-    // Fade only the edge (or edges) that hide more links: start, middle, end, or none if it all fits.
-    const edge = () => {
-      const atStart = nav.scrollLeft <= 2;
-      const atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 2;
-      nav.dataset.edge = atStart && atEnd ? 'none' : atStart ? 'start' : atEnd ? 'end' : 'middle';
-    };
+    const edge = () => markEdges(nav);
     const centre = () => {
       if (current && nav.scrollWidth > nav.clientWidth) {
         nav.scrollLeft = current.offsetLeft - (nav.clientWidth - current.offsetWidth) / 2;

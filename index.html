@@ -126,17 +126,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .stages-vertical .stage:last-child::after { top: calc(50% + 1px); bottom: -1px; }
 .stages-vertical + .caption { margin-left: calc(25% + var(--gutter) / 4); max-width: calc(50% - var(--gutter) / 2); }
 
-/* Media that hasn't been captured yet: a red link, with the shot it needs. */
-.missing {
-  aspect-ratio: 16 / 9; display: grid; align-content: end; gap: 0.3rem; padding: clamp(0.9rem, 2vw, 1.5rem);
-  background: var(--redlink-bg); border: 1px dashed var(--redlink); border-radius: 4px;
-  font-family: var(--display); font-size: var(--s-1); line-height: 1.4;
+/* A project whose media isn't ready yet: a quiet, neutral note in place of the screens. */
+.wip {
+  display: grid; place-items: center; min-height: clamp(8rem, 14vw, 11rem);
+  border: 1px dashed var(--rule); border-radius: 4px;
+  font-family: var(--display); font-size: var(--s0); font-weight: 500; color: var(--muted);
 }
-.missing strong { color: var(--redlink); font-weight: 600; font-size: var(--s0); }
-.missing span { color: var(--muted); max-width: 34em; }
-
-/* A lone placeholder spans the full width, so keep it short. */
-.wrap > .missing { aspect-ratio: auto; min-height: clamp(10rem, 20vw, 16rem); }
 
 .caption { font-family: var(--display); font-size: var(--s-1); color: var(--muted); margin-top: 0.9rem; max-width: 40em; }
 .footnote { font-family: var(--display); font-size: 0.75rem; line-height: 1.5; color: var(--muted); margin-top: 0.5rem; max-width: 48em; }
@@ -587,10 +582,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
           <p>A real-time audio visualizer and VJ tool built in Unity for a brand IP launch, driving generative visuals from live audio input. I also built the node-based pipelines that produced the campaign footage and animated GIF pack, and directed and cut the campaign video.</p>
         </div>
       </div>
-      <div class="missing" role="img" aria-label="Visualizer capture not added yet">
-        <strong>Capture needed</strong>
-        <span>The visualizer reacting to live audio, 10 to 15 seconds. A still from the campaign video would sit well beside it.</span>
-      </div>
+      <p class="wip">Work in progress</p>
     </div>
   </section>
 </main>

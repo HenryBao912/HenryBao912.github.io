@@ -106,7 +106,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 .work-head h2 { font-size: var(--s2); font-weight: 700; letter-spacing: -0.015em; }
-.work-head p { font-family: var(--display); font-size: var(--s-1); color: var(--muted); }
 
 .tiles {
   list-style: none; margin: 0; padding: 0;

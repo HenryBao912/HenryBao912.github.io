@@ -119,17 +119,13 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .tile-media video { opacity: 0; transition: opacity 0.3s ease; }
 .tile-media video.is-playing { opacity: 1; }
 .tile-media .panel-label { z-index: 1; }
-/* A project without footage yet: a full-width row under the grid, title on the left and the
-   sentence on the right (the same split as a project page's header), instead of an empty box. */
+/* The fifth project: a full-width row under the grid, its footage in the left column at the same size
+   as the tiles above and the text beside it, rather than a lone tile with an empty space next to it. */
 .tile-wide { grid-column: 1 / -1; }
-.tile-wide .tile-text {
-  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 0.5rem;
-  padding-top: clamp(1.25rem, 2.5vw, 1.75rem); border-top: 1px solid var(--rule);
-}
-.tile-wide .tile-title { grid-column: 1 / span 5; grid-row: 1 / span 2; }
-.tile-wide .tile-desc, .tile-wide .tile-meta { grid-column: 7 / -1; }
+.tile-wide .tile { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+.tile-wide .tile-text { align-content: start; }
 @media (max-width: 760px) {
-  .tile-wide .tile-title, .tile-wide .tile-desc, .tile-wide .tile-meta { grid-column: 1 / -1; grid-row: auto; }
+  .tile-wide .tile { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* A faint edge, so light screenshots don't dissolve into the paper. */

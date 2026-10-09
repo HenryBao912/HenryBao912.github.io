@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hb-intro'))document.documentElement.classList.add('seen')}catch(e){}</script>
 <title>VJ System · Henry Bao</title>
-<meta name="description" content="A real-time audio visualizer and VJ tool built in Unity for a brand IP launch, driving generative visuals from live audio input.">
+<meta name="description" content="A real-time audio visualizer and VJ tool built in Unity for a brand IP launch on Beijing’s largest screen, an 8K display shaped like an upside-down L.">
 <link rel="canonical" href="https://henrybao912.github.io/vj-system/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Henry Bao">
 <meta property="og:title" content="VJ System, by Henry Bao">
-<meta property="og:description" content="A real-time audio visualizer and VJ tool built in Unity for a brand IP launch, driving generative visuals from live audio input.">
+<meta property="og:description" content="A real-time audio visualizer and VJ tool built in Unity for a brand IP launch on Beijing’s largest screen, an 8K display shaped like an upside-down L.">
 <meta property="og:url" content="https://henrybao912.github.io/vj-system/">
 <meta property="og:image" content="https://henrybao912.github.io/assets/og-home.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -48,12 +48,13 @@
           <p class="meta">Unity · C# · For a media company, Beijing, 2025</p>
         </div>
         <div class="project-copy">
-          <p>A real-time audio visualizer and VJ tool built in Unity for a brand IP launch, driving generative visuals from live audio input. I also built the node-based pipelines that produced the campaign footage and animated GIF pack, and directed and cut the campaign video.</p>
+          <p>A real-time audio visualizer and VJ tool built in Unity for a brand IP launch, driving generative visuals from live audio input. I built it for an 8K screen shaped like an upside-down L, the largest display in Beijing, which with smaller screens around it formed a 360-degree digital experience. It is made to be played live: at events and festivals an operator moves the point of view and creates custom visuals on the spot.</p>
           <p>Everything on screen is driven by one signal. Every frame the tool reads the sound as 512 frequency bins and folds them into eight bands. The bins raise a ring of 512 bars, the bands drive eight columns and the letters of the logo, and overall loudness lifts the bar above it. The input is a live microphone or a song file, switched from an on-screen menu.</p>
+          <p>I also built the node-based pipelines that produced the campaign footage and animated GIF pack, and directed and cut the campaign video.</p>
           <dl class="stats">
-            <div><dt>frequency bins read every frame</dt><dd>512</dd></div>
-            <div><dt>frequency bands</dt><dd>8</dd></div>
-            <div><dt>bars in one draw call</dt><dd>1,023</dd></div>
+            <div><dt>largest screen in Beijing</dt><dd>8K</dd></div>
+            <div><dt>digital experience</dt><dd>360°</dd></div>
+            <div><dt>frequency bins every frame</dt><dd>512</dd></div>
           </dl>
         </div>
       </div>
@@ -90,7 +91,7 @@
           <figcaption class="panel-label">Skyline</figcaption>
         </figure>
       </div>
-      <p class="caption">Three camera moves: in from the side through the bass spikes, a spiral down from overhead, and a long-lens pan along the bars. In the tool the camera flies free on keyboard and mouse; these moves were scripted so every take runs the same way.*</p>
+      <p class="caption">Three camera moves: in from the side through the bass spikes, a spiral down from overhead, and a long-lens pan along the bars. At events the operator flies the camera live on keyboard and mouse to change the point of view; for these recordings the moves were scripted so every take runs the same way.*</p>
       <p class="footnote">*For these recordings the client’s logo was replaced with a placeholder word, and the visualizer listened to a song file, “Alone” by BoDleasons from Pixabay, instead of a live microphone. Open a clip full screen and unmute it to hear the track it is reacting to.</p>
 
       <div class="build" aria-labelledby="vj-build-title">
@@ -113,8 +114,8 @@
             <dd>Each letter gets its own material, and its glow follows one band through a 2.2 power curve, so quiet passages stay dark and hits flare. The word lights up from the bass on the left to the treble on the right.</dd>
           </div>
           <div>
-            <dt>Microphone or song file, switched live</dt>
-            <dd>Both inputs feed the same audio source, so everything downstream is identical. Esc opens a menu with the two choices; the microphone records into a looping ten-second buffer, so it can run for as long as the show does.</dd>
+            <dt>Built to be played live</dt>
+            <dd>The operator flies a free camera on keyboard and mouse to change the point of view mid-set, and Esc opens a menu that switches between the microphone and a song file. Both inputs feed the same audio source, so everything downstream is identical, and the microphone records into a looping ten-second buffer, so it can run for as long as the event does.</dd>
           </div>
           <div>
             <dt>1,023 bars in one draw call</dt>

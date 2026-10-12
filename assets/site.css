@@ -119,14 +119,43 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .tile-media video { opacity: 0; transition: opacity 0.3s ease; }
 .tile-media video.is-playing { opacity: 1; }
 .tile-media .panel-label { z-index: 1; }
-/* The fifth project: a full-width row under the grid, its footage in the left column at the same size
-   as the tiles above and the text beside it, rather than a lone tile with an empty space next to it. */
-.tile-wide { grid-column: 1 / -1; }
-.tile-wide .tile { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
-.tile-wide .tile-text { align-content: start; }
-@media (max-width: 760px) {
-  .tile-wide .tile { grid-template-columns: minmax(0, 1fr); }
+/* The last tile keeps a place for the next project: an empty scene in an editor, a wireframe cube on
+   a ground grid with the camera slowly orbiting it. It is not a link, so its title stays grey. */
+.tile-wip .tile-media::before { content: none; }  /* nothing to load, so no pulsing name */
+.tile-wip .tile-title { color: var(--muted); }
+.tile-wip:hover .tile-title { text-decoration: none; }
+.wip-scene { position: absolute; inset: 0; perspective: 85cqw; perspective-origin: 50% 38%; }
+.wip-stage {
+  position: absolute; left: 50%; top: 64%; transform-style: preserve-3d;
+  transform: rotateX(-24deg) rotateY(-32deg); animation: wip-orbit 36s linear infinite;
 }
+@keyframes wip-orbit {
+  from { transform: rotateX(-24deg) rotateY(-32deg); }
+  to { transform: rotateX(-24deg) rotateY(328deg); }
+}
+/* 14 cells of 9cqw, so a line runs through the middle and the cube covers two cells each way;
+   the red and green lines are the X and Z axes, as in an editor's ground grid. */
+.wip-floor {
+  position: absolute; left: -63cqw; top: -63cqw; width: 126cqw; height: 126cqw; transform: rotateX(90deg);
+  background:
+    linear-gradient(to bottom, transparent calc(50% - 1px), rgb(222 92 92 / 0.75) 0 calc(50% + 1px), transparent 0),
+    linear-gradient(to right, transparent calc(50% - 1px), rgb(126 196 96 / 0.7) 0 calc(50% + 1px), transparent 0),
+    linear-gradient(to right, rgb(241 242 244 / 0.2) 1px, transparent 0) 0 0 / 9cqw 9cqw,
+    linear-gradient(to bottom, rgb(241 242 244 / 0.2) 1px, transparent 0) 0 0 / 9cqw 9cqw;
+  -webkit-mask-image: radial-gradient(closest-side, #000 20%, transparent);
+  mask-image: radial-gradient(closest-side, #000 20%, transparent);
+}
+.wip-cube { position: absolute; left: -9cqw; top: -18cqw; width: 18cqw; height: 18cqw; transform-style: preserve-3d; }
+/* Four sides, each drawing its top, bottom and left edge: all twelve edges, each drawn once. */
+.wip-cube i {
+  position: absolute; inset: 0; background: rgb(241 242 244 / 0.03);
+  border: 1px solid rgb(241 242 244 / 0.85); border-right: 0;
+}
+.wip-cube i:nth-child(1) { transform: translateZ(9cqw); }
+.wip-cube i:nth-child(2) { transform: rotateY(90deg) translateZ(9cqw); }
+.wip-cube i:nth-child(3) { transform: rotateY(180deg) translateZ(9cqw); }
+.wip-cube i:nth-child(4) { transform: rotateY(270deg) translateZ(9cqw); }
+@media (prefers-reduced-motion: reduce) { .wip-stage { animation: none; } }
 
 /* A faint edge, so light screenshots don't dissolve into the paper. */
 .tile-media::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(32 33 34 / 0.1); pointer-events: none; z-index: 2; }
@@ -141,7 +170,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
   text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.14em;
 }
 .tile-meta { font-family: var(--display); font-size: 0.9375rem; color: var(--muted); line-height: 1.45; }
-.tile-desc { color: var(--ink); font-size: 1.0625rem; line-height: 1.55; max-width: 34em; }
+.tile-desc { color: var(--ink); font-size: 1.0625rem; line-height: 1.55; max-width: 34em; text-wrap: pretty; }  /* no one-word last line */
 
 /* ——— Project pages ——— */
 .project { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 6vw, 5.5rem); }

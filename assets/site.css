@@ -152,6 +152,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .project-title h1, .project-title h2 { font-size: var(--s3); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
 .page-project .project-title h1 { font-size: var(--s4); letter-spacing: -0.04em; line-height: 0.95; }
 .meta { font-family: var(--display); font-size: var(--s0); color: var(--muted); line-height: 1.45; }
+/* Who did what, stated before anything else: the team (every project so far is solo) and my part in it. */
+.role { display: grid; gap: 0.5rem; margin-top: 0.4rem; font-family: var(--display); }
+.role-tag {
+  justify-self: start; font-size: var(--s-1); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0.3rem 0.6rem; border-radius: 4px; background: var(--ink); color: var(--paper);
+}
+.role-text { font-size: var(--s0); line-height: 1.45; color: var(--ink); max-width: 25em; }
+.role-label { color: var(--muted); }
 .project-copy { grid-column: 7 / -1; display: grid; gap: 1.5rem; align-content: start; max-width: 36em; }
 
 .stats { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0; font-family: var(--display); }

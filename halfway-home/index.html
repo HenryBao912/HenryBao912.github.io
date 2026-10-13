@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="../assets/site.css?v=fb16c47e">
+<link rel="stylesheet" href="../assets/site.css?v=25fcae08">
 </head>
 <body class="page-project">
 <div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
@@ -53,7 +53,7 @@
         </div>
         <div class="project-copy">
           <p>A two-player co-op survival game. You crash on a desert planet and get home by hauling the wreck back together one heavy part at a time, on a dwindling oxygen budget. Two players carry a single rigid body with physics replicated between them, which is the problem the rest of the game is built around.</p>
-          <p>Around that core: a predator that hunts whoever falls behind, base building, a rover, a fabricator, sandstorms, a map table that shows the planet as a hologram, and landmarks to discover. I am building it alone with an AI-assisted workflow: I write the design document for each system, Claude Code implements it through a bridge into the Unity editor, and I check the result with automated tests and a scripted second player that joins a real build.</p>
+          <p>Around that core: a predator that hunts whoever falls behind, base building, a rover, a fabricator, sandstorms, a map table that shows the planet as a hologram, and landmarks to discover. Every system starts as a design document I write, and is checked by automated tests and a scripted second player that joins a real build.</p>
           <dl class="stats">
             <div><dt>system design documents</dt><dd>21</dd></div>
             <div><dt>automated tests</dt><dd>517</dd></div>
@@ -172,6 +172,11 @@
         </li>
       </ol>
       <p class="caption">Three points in development. The prototype took two days and answered one question, whether hauling a heavy crate together is fun, with two capsules on one keyboard and no netcode; it also settled the game’s gravity at 0.75 g. Then the networked systems pass, then art.</p>
+
+      <div class="endnote" aria-labelledby="hh-testing-title">
+        <h2 id="hh-testing-title">Testing with Claude and MCP</h2>
+        <p>Playtests run through MCP for Unity, with Claude driving the editor. It hosts a session, has a standalone build join as player two, plays through end-to-end checks such as installing a ship part together, continuing from a save and recovering dropped gear, and reports any errors from either player.</p>
+      </div>
     </div>
   </section>
 </main>

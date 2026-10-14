@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="../assets/site.css?v=25fcae08">
+<link rel="stylesheet" href="../assets/site.css?v=25bcb657">
 </head>
 <body class="page-project">
 <div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
@@ -52,7 +52,11 @@
           </div>
         </div>
         <div class="project-copy">
-          <p>A browser game where players race each other through Wikipedia using only in-article links. Room-code lobbies with live position and timer sync, and three game modes. I built all of it: the server, the real-time layer, and the analytics stack behind it.</p>
+          <p>A browser game where players race each other through Wikipedia using only in-article links. Room-code lobbies with live position and timer sync, and three game modes.</p>
+          <div class="story">
+            <h2 class="story-label">Development story</h2>
+            <p>In late May the game started rejecting Apple Inc. and Leonardo DiCaprio as race targets, as if almost no pages linked to them. Nothing limited how fast the server called Wikipedia, so it was being rate-limited, and each refused lookup came back empty, which the game counted as zero links. I capped the server at four requests at a time and about ten a second, and made the check treat an error as unknown, never as zero.</p>
+          </div>
           <dl class="stats">
             <div><dt>players</dt><dd>50,000</dd></div>
             <div><dt>average engagement</dt><dd>13m 47s</dd></div>

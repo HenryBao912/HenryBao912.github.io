@@ -190,6 +190,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 .role-text { font-size: var(--s0); line-height: 1.45; color: var(--ink); max-width: 25em; }
 .role-label { color: var(--muted); }
 .project-copy { grid-column: 7 / -1; display: grid; gap: 1.5rem; align-content: start; max-width: 36em; }
+/* The intro's second half: one moment from making the project, under a small label. */
+.story { display: grid; gap: 0.35rem; }
+.story-label { font-size: var(--s-1); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
 
 .stats { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0; font-family: var(--display); }
 .stats div { display: grid; gap: 0.1rem; }

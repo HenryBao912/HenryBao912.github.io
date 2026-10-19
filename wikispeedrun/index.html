@@ -51,19 +51,19 @@
             <p class="role-text"><span class="role-label">My part:</span> Game design, full-stack engineering and deployment</p>
             <p class="role-text"><span class="role-label">Skills:</span> Real-time networking, server-side validation, API caching and rate limiting, PostgreSQL, product analytics</p>
           </div>
+          <p class="visit-row"><a class="visit" href="https://wikispeedrun.io">wikispeedrun.io</a><a class="visit" href="https://github.com/HenryBao912/WikiSpeedrun">Source on GitHub</a></p>
         </div>
         <div class="project-copy">
           <p>A browser game where players race each other through Wikipedia using only in-article links. Room-code lobbies with live position and timer sync, and three game modes.</p>
           <div class="story">
             <h2 class="story-label">Development story</h2>
-            <p>In late May the game started rejecting Apple Inc. and Leonardo DiCaprio as race targets, as if almost no pages linked to them. Nothing limited how fast the server called Wikipedia, so it was being rate-limited, and each refused lookup came back empty, which the game counted as zero links. I capped the server at four requests at a time and about ten a second, and made the check treat an error as unknown, never as zero.</p>
+            <p>In the first version you couldn’t tell how close anyone was until someone finished, so a race felt blind. On the first day I gave every click a distance score and added a bar that shows every player, counted in clicks from the target. Now a wrong turn shows the moment a page loads, and a rival one click away means the next click could end the race.</p>
           </div>
           <dl class="stats">
             <div><dt>players</dt><dd>50,000</dd></div>
             <div><dt>average engagement</dt><dd>13m 47s</dd></div>
             <div><dt>GitHub stars</dt><dd>160+</dd></div>
           </dl>
-          <p class="visit-row"><a class="visit" href="https://wikispeedrun.io">wikispeedrun.io</a><a class="visit" href="https://github.com/HenryBao912/WikiSpeedrun">Source on GitHub</a></p>
         </div>
       </div>
 

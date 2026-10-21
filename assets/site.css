@@ -329,6 +329,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-
 }
 .endnote > h2 { font-size: var(--s0); font-weight: 700; line-height: 1.35; }
 .endnote p { font-size: var(--s-1); line-height: 1.55; color: var(--muted); }
+.endnote + .endnote { margin-top: 1.5rem; }  /* a second note sits closer to the first */
 .build-list code, .notes code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--panel); padding: 0.05em 0.3em; border-radius: 3px; }
 
 /* ——— Hutong After Rain: renderer switch and credits ——— */

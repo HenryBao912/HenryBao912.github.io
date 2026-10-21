@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="../assets/site.css?v=25bcb657">
+<link rel="stylesheet" href="../assets/site.css?v=e880b227">
 </head>
 <body class="page-project">
 <div class="loader" aria-hidden="true"><span class="loader-name" data-name="Henry Bao">Henry Bao</span></div>
@@ -49,7 +49,7 @@
           <div class="role">
             <span class="role-tag">Solo project</span>
             <p class="role-text"><span class="role-label">My part:</span> Game design, systems design, art direction and testing</p>
-            <p class="role-text"><span class="role-label">Skills:</span> Network programming, networked physics, vehicle physics, procedural geometry, automated testing</p>
+            <p class="role-text"><span class="role-label">Skills:</span> Co-op mechanics, level design, multiplayer systems, lighting, automated testing</p>
           </div>
         </div>
         <div class="project-copy">
@@ -60,7 +60,7 @@
           </div>
           <dl class="stats">
             <div><dt>system design documents</dt><dd>21</dd></div>
-            <div><dt>automated tests</dt><dd>517</dd></div>
+            <div><dt>automated tests</dt><dd>770+</dd></div>
             <div><dt>lighting moods</dt><dd>9</dd></div>
           </dl>
         </div>
@@ -140,7 +140,7 @@
           </div>
           <div>
             <dt>Tested against a real second player</dt>
-            <dd>A standalone build joins the editor as player two and plays from a script: hauling, installing a part together, driving, voting to leave. It also records screenshots and frame times from inside the build at the Steam Deck’s resolution. 517 automated tests sit underneath.</dd>
+            <dd>A standalone build joins the editor as player two and plays from a script: hauling, installing a part together, driving, voting to leave. It also records screenshots and frame times from inside the build at the Steam Deck’s resolution. More than 770 automated tests sit underneath.</dd>
           </div>
           <div>
             <dt>Geometry built to the art bible</dt>
@@ -157,6 +157,14 @@
           <div>
             <dt>When a partner drops</dt>
             <dd>A disconnected player’s body is held for 90 seconds in case they rejoin. The predator and wildlife freeze while the host waits, and if the partner doesn’t come back the host chooses to continue solo or save and quit. Before this, the body stayed forever, still holding whatever it carried.</dd>
+          </div>
+          <div>
+            <dt>Storms on one server clock</dt>
+            <dd>Sandstorms run on a single server-side cycle, so both players see the same storm at the same moment: a 30-second warning, then up to two and a half minutes of 30 m visibility, faster oxygen loss in the open and wind that drags loose cargo and the rover. The wreck is the only shelter.</dd>
+          </div>
+          <div>
+            <dt>A fabricator that closes the loop</dt>
+            <dd>Crystal, plants and artifacts gathered on the planet pay for three rover upgrades at a console in the wreck: grippier treads, a winch that reels twice as fast, and a storm lamp. The server checks range, recipe and payment, and the upgrades show on the rover and are saved with it.</dd>
           </div>
         </dl>
       </div>
@@ -179,7 +187,11 @@
 
       <div class="endnote" aria-labelledby="hh-testing-title">
         <h2 id="hh-testing-title">Testing with Claude and MCP</h2>
-        <p>The playtests that run through MCP for Unity check whether the mechanics work, not the player experience. Claude drives the editor: it hosts a session, has a standalone build join as player two, plays through end-to-end checks such as installing a ship part together, continuing from a save and recovering dropped gear, and reports any errors from either player.</p>
+        <p>The scripted playtests above run through MCP for Unity, with Claude driving the editor. They check whether the mechanics work, not the player experience.</p>
+      </div>
+      <div class="endnote" aria-labelledby="hh-credits-title">
+        <h2 id="hh-credits-title">Credits</h2>
+        <p>Models, animations and interface art from Synty Studios: POLYGON Sci-Fi Space, POLYGON Sci-Fi Worlds, POLYGON Generic, Animation Base Locomotion, Interface Core and Interface Sci-Fi Soldier HUD. The Sky Arch and the Deep Cut are procedural meshes built in the project.</p>
       </div>
     </div>
   </section>

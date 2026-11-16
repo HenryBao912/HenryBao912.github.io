@@ -54,10 +54,10 @@
           <p class="visit-row"><a class="visit" href="https://wikispeedrun.io">wikispeedrun.io</a><a class="visit" href="https://github.com/HenryBao912/WikiSpeedrun">Source on GitHub</a></p>
         </div>
         <div class="project-copy">
-          <p>A browser game where players race each other through Wikipedia using only in-article links. Room-code lobbies with live position and timer sync, and three game modes.</p>
+          <p>A browser game where players race each other through Wikipedia using only in-article links. Rooms of up to 30 fill from one invite link, with every player’s position and the timer kept in sync. Three game modes, solo play and a daily challenge.</p>
           <div class="story">
             <h2 class="story-label">Development story</h2>
-            <p>In the first version you couldn’t tell how close anyone was until someone finished, so a race felt blind. On the first day I gave every click a distance score and added a bar that shows every player, counted in clicks from the target. That turned the race into something you can follow while it happens, not just a result at the end.</p>
+            <p>In the first version you couldn’t tell how close anyone was until someone finished, so a race felt blind. On the first day I gave every click a distance score and added a bar that shows every player, counted in clicks from the target. That turned the race into something you can follow while it happens, not just a result at the end. This November I rebuilt that bar for laptop screens as a rail down the left edge. Players scroll down as they read, so the rail runs the same way, with the target at the bottom, and the article gets its height back.</p>
           </div>
           <dl class="stats">
             <div><dt>players</dt><dd>50,000+</dd></div>
@@ -67,26 +67,32 @@
         </div>
       </div>
 
-      <!-- One four-player race, shown from three screens -->
+      <!-- One 30-player race, on the host's laptop and on a rival's phone -->
       <div class="panels">
         <figure class="panel panel-main">
-          <video src="../assets/wsr-race.mp4" poster="../assets/wsr-race-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="A four-player race from Sushi to Lunar Roving Vehicle. The view pushes in on the progress bar as each player's pill moves toward the finish line, then pulls back for the winning click and the results screen."></video>
-          <figcaption class="panel-label">Race</figcaption>
+          <video id="wsr-race" src="../assets/wsr-race.mp4?v=2" poster="../assets/wsr-race-poster.jpg?v=2" muted loop playsinline data-autoplay preload="none" aria-label="A 30-player race from Sushi to Lunar Roving Vehicle on the host’s screen. A rail down the left edge shows every player’s distance from the target. The host clicks United States, then Space Race, then Lunar Roving Vehicle, and the results screen ranks all 30 routes."></video>
+          <figcaption class="panel-label" style="left:auto;right:10px;top:auto;bottom:10px">Race</figcaption>
         </figure>
-        <figure class="panel">
-          <img data-full src="../assets/wsr-lobby.jpg" alt="The lobby: room code 846E6, four players, and Classic mode selected." width="1120" height="630">
+        <figure class="panel panel-tall panel-portrait">
+          <video id="wsr-phone" src="../assets/wsr-phone.mp4" poster="../assets/wsr-phone-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The same race on one rival’s phone, at the same moments. The players move along a bar above the article as this rival goes from Sushi to Japan, Space exploration, Moon and Apollo program, and the race ends on the results screen."></video>
+          <figcaption class="panel-label" style="left:auto;right:10px;top:auto;bottom:10px">A rival’s phone</figcaption>
+        </figure>
+      </div>
+      <div class="panels panels-pair">
+        <figure class="panel panel-main">
+          <img data-full src="../assets/wsr-lobby.jpg?v=2" alt="The lobby: an invite link, room code 65611, thirty players, and Classic mode selected." width="1120" height="630">
           <figcaption class="panel-label">Lobby</figcaption>
         </figure>
-        <figure class="panel">
-          <img data-full src="../assets/wsr-results.jpg" alt="The results screen: each player's path with the hop count after every click, ranked." width="1120" height="630">
+        <figure class="panel panel-main">
+          <img data-full src="../assets/wsr-results.jpg?v=2" alt="The results screen for a 30-player Classic race: each player’s path with the distance left after every click, ranked." width="1120" height="630">
           <figcaption class="panel-label">Results</figcaption>
         </figure>
       </div>
-      <p class="caption">One race from Sushi to Lunar Roving Vehicle. The bar under the breadcrumbs places every player by how many clicks they are from the target, and the green edge is the finish. This race was staged on a local server for the recording: the host is a real browser and the three rivals are clients that join through the same API, every move follows a real link, and the server’s anti-cheat accepted all of them. The push-in on the bar was added after capture.</p>
+      <p class="caption">One race from Sushi to Lunar Roving Vehicle with 30 players in the room. The rail on the left places every player by how many clicks they are from the target, with the target at the bottom. The second screen is one rival’s phone during the same race, where the same positions run along a bar. This race was staged on a local server for the recording: the host and that rival are real browsers with scripted inputs, the other 28 players are clients that join through the same API, every move follows a real link, and the server’s move check accepted all 77 of them.</p>
 
       <div class="tactics" aria-labelledby="tactics-title">
         <h2 id="tactics-title">How that race was won</h2>
-        <p class="routes-intro" id="routes-intro">Every player starts on Sushi, three clicks from the target. The number after each article is how many clicks away it left them.</p>
+        <p class="routes-intro" id="routes-intro">All 30 players start on Sushi, three clicks from the target. These are five of the routes. The number after each article is how many clicks away it left the player.</p>
         <div class="routes-scroll">
           <table class="routes" aria-describedby="routes-intro">
             <thead>
@@ -99,14 +105,22 @@
                 <td><span class="hop near">Space Race <b>1</b></span></td>
                 <td><span class="hop goal">Lunar Roving Vehicle</span></td>
                 <td></td>
-                <td class="fin">Won in 3 clicks, 0:24</td>
+                <td class="fin">Won in 3 clicks, 0:29</td>
               </tr>
               <tr>
                 <th scope="row"><span class="dot" style="--c:#5a9e8f"></span>Maya</th>
-                <td><span class="hop">Japan</span></td>
+                <td><span class="hop">Japan <b>2</b></span></td>
                 <td><span class="hop near">Space exploration <b>1</b></span></td>
                 <td><span class="hop">Moon <b>2</b></span></td>
                 <td><span class="hop near">Apollo program <b>1</b></span></td>
+                <td class="fin">1 click short</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="dot" style="--c:#9a6a8f"></span>Noah</th>
+                <td><span class="hop">United States <b>2</b></span></td>
+                <td><span class="hop">Cold War <b>2</b></span></td>
+                <td><span class="hop near">Space Race <b>1</b></span></td>
+                <td></td>
                 <td class="fin">1 click short</td>
               </tr>
               <tr>
@@ -140,8 +154,8 @@
             <p>Maya was one click away on her second move. Space exploration links straight to Lunar Roving Vehicle, but she clicked Moon and fell back to two. The game shows that cost the moment a page loads, so a wrong turn is visible immediately.</p>
           </div>
           <div>
-            <h3>Watch the bar</h3>
-            <p>The bar shows every rival in clicks, not just who is ahead. A pill one click from the line means the next click can end the race. Maya was back at one click when the winning link was clicked.</p>
+            <h3>Watch the rail</h3>
+            <p>The rail shows every rival in clicks, not just who is ahead, and the game calls out each player who gets within one click. When the winning link was clicked, five rivals were one click from the target. Noah had reached the same article, Space Race, about three seconds earlier.</p>
           </div>
         </div>
       </div>
@@ -151,7 +165,7 @@
         <dl class="build-list">
           <div>
             <dt>One process, one dependency</dt>
-            <dd>The server is Node’s built-in <code>http</code> module, about 4,700 lines, and its only package is the Postgres driver. The client is a single 10,000-line HTML file. More than 230 commits so far.</dd>
+            <dd>The server is Node’s built-in <code>http</code> module, about 5,500 lines, and its only package is the Postgres driver. The client is a single 11,000-line HTML file. More than 290 commits so far.</dd>
           </div>
           <div>
             <dt>Real time without WebSockets</dt>
@@ -166,8 +180,16 @@
             <dd>Link and backlink lookups are cached for 24 hours, capped at 5,000 entries, and identical requests already in flight are merged, so ten rooms asking about the same article make one call.</dd>
           </div>
           <div>
+            <dt>Thirty players under a rate limit</dt>
+            <dd>Every Wikipedia request the server makes goes through one queue, held to four at a time and about ten a second. The check a player is waiting on goes ahead of background work, so clicks stay quick in a full room while a new race is still mapping its target.</dd>
+          </div>
+          <div>
             <dt>Moves are checked on the server</dt>
             <dd>A click only counts if the article is a real outgoing link of the player’s current page, with redirects resolved first. The check fails open on a Wikipedia error, and it ran in shadow mode, logging without blocking, before I turned enforcement on.</dd>
+          </div>
+          <div>
+            <dt>A rail that holds a full room</dt>
+            <dd>On laptop screens the positions run down a rail 152 pixels wide. Markers that would overlap are nudged apart, three or more close together collapse into a group with a count, and your own marker keeps a ring. I checked the layout against 14,960 randomly generated race states on 22 screen sizes.</dd>
           </div>
           <div>
             <dt>Puzzles that can be won</dt>
@@ -176,7 +198,7 @@
         </dl>
       </div>
 
-      <ol class="stages" style="--n: 2" aria-label="WikiSpeedrun in development">
+      <ol class="stages" style="--n: 3" aria-label="WikiSpeedrun in development">
         <li class="stage">
           <span class="stage-label">First playable</span>
           <div class="shot"><img data-full src="../assets/wsr-first-playable.jpg" alt="The first playable build: a race from Sushi to Leonardo da Vinci, with the step counter and timer in a bar above the article." width="1600" height="900" loading="lazy"></div>
@@ -184,6 +206,10 @@
         <li class="stage">
           <span class="stage-label">Shipped</span>
           <div class="shot"><video src="../assets/wsr-shipped.mp4" poster="../assets/wsr-shipped-poster.jpg" muted loop playsinline data-autoplay preload="none" aria-label="The shipped game: choosing Earth and Moon, racing through the Earth article, and the results screen."></video></div>
+        </li>
+        <li class="stage">
+          <span class="stage-label">Today</span>
+          <div class="shot"><img data-full src="../assets/wsr-today.jpg" alt="The current build: thirty players on the race rail during a race from Sushi to Lunar Roving Vehicle, with a notice that Noah is one link away." width="1600" height="900" loading="lazy"></div>
         </li>
       </ol>
     </div>
@@ -201,5 +227,15 @@
 </nav>
 
 <script src="../assets/site.js?v=10dcdeee" defer></script>
+<script>
+  // Keep the phone clip on the same moment of the race as the main clip.
+  (function () {
+    var a = document.getElementById('wsr-race'), b = document.getElementById('wsr-phone');
+    if (!a || !b) return;
+    a.addEventListener('timeupdate', function () {
+      if (b.readyState > 1 && Math.abs(b.currentTime - a.currentTime) > 0.25) b.currentTime = a.currentTime;
+    });
+  })();
+</script>
 </body>
 </html>
